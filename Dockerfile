@@ -9,7 +9,7 @@ ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 RUN apk add --virtual build-dependencies ${PHPIZE_DEPS}
-RUN apk add openssl ca-certificates librdkafka-dev libxml2-dev oniguruma-dev zip libzip-dev linux-headers tzdata libjpeg-turbo-dev libpng-dev libwebp-dev freetype-dev libpq-dev unzip libmcrypt-dev icu-dev supervisor
+RUN apk add openssl ca-certificates librdkafka-dev libxml2-dev oniguruma-dev zip libzip-dev linux-headers tzdata libjpeg-turbo-dev libpng-dev libwebp-dev freetype-dev libpq-dev unzip libmcrypt-dev icu-dev supervisor git
 RUN cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 RUN docker-php-ext-install -j$(nproc) bcmath ctype fileinfo mbstring pdo pdo_pgsql dom pcntl opcache gd zip intl \
     && pecl install excimer redis rdkafka apcu mcrypt \
@@ -28,21 +28,13 @@ RUN addgroup -S composer \
     && adduser -S composer -G composer \
     && chown -R composer /opt/apps/www
 
-# FROM node:20-alpine AS frontend
-# COPY --from=composer_base /opt/apps/www /opt/apps/www
-# WORKDIR /opt/apps/www
-
-# RUN npm install && \
-#     npm run build
-
-FROM base AS consumers
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-
 FROM base AS fpm_server
 
 ENTRYPOINT ["./docker/entrypoint.sh"]
 CMD ["php-fpm"]
 
+FROM base AS consumer
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 FROM nginx:alpine AS web_server
 WORKDIR /opt/apps/www
