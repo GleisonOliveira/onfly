@@ -88,7 +88,7 @@ services:
         volumes:
             - ./site:/opt/apps/www
         working_dir: /opt/apps/www
-        command: npm install
+        command: npm install --legacy-peer-deps
     composer:
         image: composer:2
         command: ["composer", "install", "--ignore-platform-reqs"]

@@ -2,7 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-    <v-btn> Clicars </v-btn>
+    <v-btn @click.prevent="increment"> Clicar </v-btn>
     Numero de clicks {{ count }}
   </div>
 </template>
