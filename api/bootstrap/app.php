@@ -7,6 +7,8 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\CssSelector\Exception\InternalErrorException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,10 +23,15 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (UnauthorizedException $ex, Request $request) {
+        $exceptions->render(function (UnauthorizedException|InternalErrorException $ex, Request $request) {
             return response()->json([
                 'message' => $ex->getMessage()
             ], 401);
+        });
+        $exceptions->render(function (BadRequestHttpException $ex, Request $request) {
+            return response()->json([
+                'message' => $ex->getMessage()
+            ], 400);
         });
         $exceptions->render(function (AuthenticationException $ex, Request $request) {
             return response()->json([

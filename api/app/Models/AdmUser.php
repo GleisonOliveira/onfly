@@ -61,7 +61,7 @@ class AdmUser extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            'iss' => 'localhost',
+            'iss' => 'localhost/api/admin',
         ];
     }
 }
