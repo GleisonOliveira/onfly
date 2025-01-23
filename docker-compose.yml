@@ -75,9 +75,10 @@ services:
     onfly.node:
         image: node:23-alpine
         ports:
-            - '3000:8080'
+            - '3000:3000'
         volumes:
             - ./site:/opt/apps/www
+            - ./site/node_modules:/opt/apps/www/node_modules
         working_dir: /opt/apps/www
         command: npm run serve
         depends_on:

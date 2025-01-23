@@ -5,5 +5,6 @@ find ./storage/ -type f -iname "*.gitignore" -exec chmod 644 {} \;
 find ./bootstrap/ -type f -iname "*.gitignore" -exec chmod 644 {} \;
 
 php artisan migrate
+php artisan optimize
 
 exec "$@"

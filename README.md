@@ -10,4 +10,9 @@ Esse repositório faz parte do teste para desenvolvedor full stack senior na emp
 ### Rotas
 - [http://localhost:8080/up](http://localhost:8080/up) - Tela inicial para verificar se aplicação em laravel está rodando
 - [http://localhost:8080/horizon](http://localhost:8080/horizon) - Tela go orquestrador de filas e processos do laravel
+- [http://localhost:8080/docs/api](http://localhost:8080/docs/api) - Documentação dos endpoints
 - [http://localhost:3000/](http://localhost:3000/) - Rota principal do site
+
+
+### Rodando testes
+php artisan migrate --env=testing
