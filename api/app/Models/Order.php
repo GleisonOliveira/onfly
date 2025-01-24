@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Events\OrderUpdated;
 use App\Models\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
-    use HasUuids;
+    use HasUuids, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -40,4 +42,13 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * The event map for the model.
+     *
+     * @var array<string, string>
+     */
+    protected $dispatchesEvents = [
+        'updated' => OrderUpdated::class,
+    ];
 }

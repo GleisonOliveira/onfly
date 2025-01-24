@@ -15,6 +15,8 @@ class OrderController extends Controller
 
     /**
      * List user orders
+     * 
+     * @response Illuminate\Http\Resources\Json\AnonymousResourceCollection<Illuminate\Pagination\LengthAwarePaginator<OrderResource>>
      */
     public function index(Request $request, UserOrderFilters $userOrderFilters)
     {
@@ -28,6 +30,9 @@ class OrderController extends Controller
      */
     public function store(Request $request, UserOrderRequest $userOrderRequest)
     {
+        /**
+         * @status 201
+         */
         return new OrderResource(
             $this->orderService->addUserOrder($request->user('api'), $userOrderRequest)
         );

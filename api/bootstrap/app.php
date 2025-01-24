@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -37,6 +38,11 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'message' => 'Nào autenticado'
             ], 401);
+        });
+        $exceptions->render(function (NotFoundHttpException $ex, Request $request) {
+            return response()->json([
+                'message' => $ex->getMessage()
+            ], 404);
         });
 
     })->create();

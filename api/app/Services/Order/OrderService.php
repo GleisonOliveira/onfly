@@ -72,6 +72,8 @@ class OrderService
             }
 
             return $order;
+        } catch (NotFoundHttpException $ex) {
+            throw $ex;
         } catch (Throwable) {
             throw new InternalErrorException('Não foi possível efetuar o cadastro');
         }

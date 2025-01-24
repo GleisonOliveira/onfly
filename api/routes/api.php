@@ -9,7 +9,7 @@ Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('signup', [AuthController::class, 'signUp']);
     Route::middleware([AcceptJson::class, 'auth:api'])->group(function () {
-        Route::resource('order', OrderController::class);
+        Route::apiResource('order', OrderController::class);
     });
 
     Route::prefix('admin')->middleware(AcceptJson::class)->group(function () {
