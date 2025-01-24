@@ -17,13 +17,20 @@ class OrderService
 {
     private const int RESULTS_PER_PAGE = 10;
 
+    private const array ORDER_FILTERS = [
+        'status' => '=',
+        'departure_date' => '>=',
+        'arrive_date' => '<=',
+        'destination_id' => '=',
+    ];
+
     /**
      * List the user orders
      *
      * @param  User             $user
      * @param  UserOrderFilters $userOrderFilters
      *
-     * @return void
+     * @return LengthAwarePaginator
      * @throws InternalErrorException
      */
     public function listUserOrders(
@@ -37,14 +44,16 @@ class OrderService
                 ->where('user_id', $user->id);
 
             if (!empty($data['id'])) {
-                return $query->where('id', $data['id'])->paginate(self::RESULTS_PER_PAGE);
+                return $query
+                    ->where('id', $data['id'])
+                    ->paginate(self::RESULTS_PER_PAGE);
             }
 
             $query = $this->getFilters($query, $data);
 
             return $query->paginate(self::RESULTS_PER_PAGE);
         } catch (Throwable) {
-            throw new InternalErrorException('Não foi possível efetuar o cadastro');
+            throw new InternalErrorException('Não foi possível listar os pedidos');
         }
     }
 
@@ -55,7 +64,7 @@ class OrderService
      * @param  string $orderId
      *
      * @return Order
-     * @throws InternalErrorException
+     * @throws InternalErrorException|NotFoundHttpException
      */
     public function getUserOrder(
         User $user,
@@ -113,21 +122,13 @@ class OrderService
      */
     private function getFilters(Builder $query, array $data): Builder
     {
-        if (!empty($data['status'])) {
-            $query->where('status', $data['status']);
-        }
+        $orderFilters = self::ORDER_FILTERS;
 
-        if (!empty($data['departure_date'])) {
-            $query->where('departure_date', '>=', $data['departure_date']);
-        }
-
-        if (!empty($data['arrive_date'])) {
-            $query->where('arrive_date', '<=', $data['arrive_date']);
-        }
-
-        if (!empty($data['destination_id'])) {
-            $query->where('destination_id', $data['destination_id']);
-        }
+        array_walk($orderFilters, function ($filter, $key) use ($query, $data) {
+            if (!empty($data[$key])) {
+                $query->where($key, $filter, $data[$key]);
+            }
+        });
 
         return $query;
     }
