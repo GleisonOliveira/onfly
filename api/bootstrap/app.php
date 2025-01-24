@@ -36,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
         $exceptions->render(function (AuthenticationException $ex, Request $request) {
             return response()->json([
-                'message' => 'Nào autenticado'
+                'message' => 'Não autenticado'
             ], 401);
         });
         $exceptions->render(function (NotFoundHttpException $ex, Request $request) {

@@ -1,32 +1,4 @@
 services:
-    onfly.fpm:
-        build:
-            context: .
-            target: fpm_server
-        image: onfly/fpm_server
-        volumes:
-            - './api:/opt/apps/www'
-        networks:
-            - onfly
-        user: "0:0"
-        depends_on:
-            - composer
-
-    onfly.web:
-        build:
-            context: .
-            target: web_server
-        image: onfly/web_server
-        ports:
-            - '8080:80'
-        environment:
-            FPM_HOST: "onfly.fpm:9000"
-        volumes:
-            - './api/public:/opt/apps/www/public'
-        networks:
-            - onfly
-        depends_on:
-            - onfly.fpm
     onfly.redis:
         image: 'redis:alpine'
         ports:
@@ -60,31 +32,6 @@ services:
             test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-api}"]
             retries: 3
             timeout: 5s
-
-    onfly.consumer:
-        build:
-            context: .
-            target: consumer
-        image: onfly/consumer
-        volumes:
-            - './api:/opt/apps/www'
-        networks:
-            - onfly
-        user: "0:0"
-        depends_on:
-            - composer
-
-    onfly.node:
-        image: node:23-alpine
-        ports:
-            - '3000:3000'
-        volumes:
-            - ./site:/opt/apps/www
-            - ./site/node_modules:/opt/apps/www/node_modules
-        working_dir: /opt/apps/www
-        command: npm run serve
-        depends_on:
-            - node
 
     node:
         image: node:23-alpine

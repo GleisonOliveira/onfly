@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AdmUser;
 use App\Models\Destination;
 use App\Models\Order;
 use App\Models\User;
@@ -16,6 +17,7 @@ beforeEach(function () {
     $this->arriveDate = '2025-05-02 00:00:00';
 
     $this->user = User::factory()->create();
+    $this->admUser = AdmUser::factory()->create();
     $this->destination = Destination::factory()->create();
     $this->order = Order::factory()->for($this->destination)->for($this->user)->create([
         'status' => 'pending',
@@ -30,10 +32,12 @@ beforeEach(function () {
     ];
 
     $this->actingAs($this->user, 'api');
+    $this->actingAs($this->admUser, 'api_admin');
 });
 
 describe('Order', function () {
     it('Should create a new order', function () {
+
         $response = $this->post('/api/v1/order', $this->orderData);
 
         $response->assertStatus(201);
@@ -44,7 +48,7 @@ describe('Order', function () {
         ]);
     });
 
-    it('Should get a order', function () {
+    it('Should get an order', function () {
         $response = $this->get("/api/v1/order/{$this->order->id}");
 
         $response->assertStatus(200);
@@ -52,8 +56,21 @@ describe('Order', function () {
         expect($response['data']['id'])->toBe($this->order->id);
     });
 
-    it('Should get a order list', function () {
+    it('Should get an order list', function () {
         $response = $this->get("/api/v1/order");
+
+        $response->assertStatus(200);
+
+        expect(count($response['data']))->toBe(1);
+        expect($response['meta']['total'])->not->toBeNull();
+        expect($response['meta']['current_page'])->toBe(1);
+        expect($response['data'][0]['id'])->toBe($this->order->id);
+    });
+});
+
+describe('Order Admin', function () {
+    it('Should get an order list', function () {
+        $response = $this->get("/api/v1/admin/order");
 
         $response->assertStatus(200);
 

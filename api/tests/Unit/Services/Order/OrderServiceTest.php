@@ -98,3 +98,45 @@ describe('Order', function () {
         $this->orderService->getUserOrder($this->user, str()->uuid());
     })->throws(NotFoundHttpException::class);
 });
+
+describe('Order admin', function () {
+    test('Should return a order list', function () {
+        $this->userOrderFilters->expects('validated')->andReturn([]);
+
+        $orders = $this->orderService->listAdmUserOrders($this->userOrderFilters);
+
+        expect($orders[0]->id)->toBe($this->order->id);
+    });
+
+    test('Should return a order list filtering by status', function () {
+        $this->userOrderFilters->expects('validated')->andReturn(['status' => 'pending']);
+
+        $orders = $this->orderService->listAdmUserOrders($this->userOrderFilters);
+
+        expect($orders[0]->id)->toBe($this->order->id);
+    });
+
+    test('Should return a order list filtering by departure_date', function () {
+        $this->userOrderFilters->expects('validated')->andReturn(['departure_date' => $this->departureDate]);
+
+        $orders = $this->orderService->listAdmUserOrders($this->userOrderFilters);
+
+        expect($orders[0]->id)->toBe($this->order->id);
+    });
+
+    test('Should return a order list filtering by arrive_date', function () {
+        $this->userOrderFilters->expects('validated')->andReturn(['arrive_date' => $this->arriveDate]);
+
+        $orders = $this->orderService->listAdmUserOrders($this->userOrderFilters);
+
+        expect($orders[0]->id)->toBe($this->order->id);
+    });
+
+    test('Should return a order list filtering by destination_id', function () {
+        $this->userOrderFilters->expects('validated')->andReturn(['destination_id' => $this->destination->id]);
+
+        $orders = $this->orderService->listAdmUserOrders($this->userOrderFilters);
+
+        expect($orders[0]->id)->toBe($this->order->id);
+    });
+});

@@ -58,6 +58,36 @@ class OrderService
     }
 
     /**
+     * List the user orders
+     *
+     * @param  UserOrderFilters $userOrderFilters
+     *
+     * @return LengthAwarePaginator
+     * @throws InternalErrorException
+     */
+    public function listAdmUserOrders(
+        UserOrderFilters $userOrderFilters
+    ): LengthAwarePaginator {
+        try {
+            $data = $userOrderFilters->validated();
+            $query = Order::with('destination')
+                ->with('user');
+
+            if (!empty($data['id'])) {
+                return $query
+                    ->where('id', $data['id'])
+                    ->paginate(self::RESULTS_PER_PAGE);
+            }
+
+            $query = $this->getFilters($query, $data);
+
+            return $query->paginate(self::RESULTS_PER_PAGE);
+        } catch (Throwable) {
+            throw new InternalErrorException('Não foi possível listar os pedidos');
+        }
+    }
+
+    /**
      * Get the user order
      *
      * @param  User   $user
