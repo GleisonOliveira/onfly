@@ -2,13 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
-
-class LoginRequest extends FormRequest
+class LoginRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -40,17 +34,5 @@ class LoginRequest extends FormRequest
             'password.min' => 'A senha deve ter no mínimo 8 caracteres',
             'password.max' => 'A senha deve ter no máximo 16 caracteres',
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = new ValidationException($validator);
-
-        throw new HttpResponseException(
-            response()->json([
-                'message' => $errors->getMessage(),
-                'errors' => $errors->errors()
-            ], JsonResponse::HTTP_BAD_REQUEST)
-        );
     }
 }
