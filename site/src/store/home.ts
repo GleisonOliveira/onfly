@@ -1,11 +1,6 @@
 import { GetterTree, MutationTree, ActionTree } from "vuex";
 import { api, version } from "@/services/api/api";
-
-type Destination = {
-  id: string;
-  name: string;
-  airport: string;
-};
+import { Destination } from "@/types/destination";
 
 export interface HomeModuleType {
   destinations: Destination[];

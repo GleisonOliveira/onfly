@@ -1,9 +1,7 @@
 import { GetterTree, MutationTree, ActionTree } from "vuex";
-import { signUp as apiSignUp, login as apiLogin } from "@/services/api/api";
+import { api, login, signUp } from "@/services/api/api";
 import router from "@/router";
-import { Login, SignUp } from "@/types/login";
-
-type LoginType = "login" | "sign";
+import { Login, LoginType, SignUp } from "@/types/login";
 
 type ErrorMessage = {
   title: string;
@@ -41,7 +39,7 @@ const actions = <ActionTree<LoginModuleType, unknown>>{
 
   async login({ commit, dispatch }, loginData: Login) {
     commit("setIsSubmitting", true);
-    const [response, error] = await apiLogin(loginData);
+    const [response, error] = await login(api)(loginData);
 
     if (response) {
       const { data } = response;
@@ -76,7 +74,7 @@ const actions = <ActionTree<LoginModuleType, unknown>>{
 
   async signup({ commit, dispatch }, signUpData: SignUp) {
     commit("setIsSubmitting", true);
-    const [response, error] = await apiSignUp(signUpData);
+    const [response, error] = await signUp(api)(signUpData);
 
     if (response) {
       const { data } = response;

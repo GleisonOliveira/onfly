@@ -1,10 +1,13 @@
 import router from "@/router";
-import { Login, LoginErrorResponse, LoginSuccessResponse } from "@/types/login";
 import axios from "axios";
+import { login, signUp } from "./login";
+import { getOrders } from "./order";
 
 export const api = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL_API,
 });
+
+export const version = "api/v1";
 
 api.interceptors.request.use(
   function (config) {
@@ -32,11 +35,8 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-type AxiosRequestResponse<T, E> = Promise<[T?, E?, unknown?]>;
 
-export const version = "api/v1";
-
-const getAxiosError = <T, E>(error: unknown): [T?, E?, unknown?] => {
+export const getAxiosError = <T, E>(error: unknown): [T?, E?, unknown?] => {
   if (axios.isAxiosError(error)) {
     const { response } = error;
 
@@ -46,32 +46,4 @@ const getAxiosError = <T, E>(error: unknown): [T?, E?, unknown?] => {
   return [undefined, undefined, error];
 };
 
-export const login = async (
-  loginData: Login
-): AxiosRequestResponse<LoginSuccessResponse, LoginErrorResponse> => {
-  try {
-    const { data } = await api.post<LoginSuccessResponse>(
-      `${version}/login`,
-      loginData
-    );
-
-    return [data, undefined, undefined];
-  } catch (error) {
-    return getAxiosError(error);
-  }
-};
-
-export const signUp = async (
-  signUpData: Login
-): AxiosRequestResponse<LoginSuccessResponse, LoginErrorResponse> => {
-  try {
-    const { data } = await api.post<LoginSuccessResponse>(
-      `${version}/signup`,
-      signUpData
-    );
-
-    return [data, undefined, undefined];
-  } catch (error) {
-    return getAxiosError(error);
-  }
-};
+export { login, signUp, getOrders };

@@ -21,6 +21,7 @@ interface RootState {
   toast?: ToastModuleType;
   order?: OrderModuleType;
 }
+
 export default createStore<RootState>({
   state: {
     loading: false,

@@ -1,16 +1,18 @@
 import router from "@/router";
-import { User } from "@/types/login";
+import { User } from "@/types/user";
 import { GetterTree, MutationTree, ActionTree } from "vuex";
 
 export interface UserModuleType {
   jwt?: string;
   user?: User;
+  type?: "Admin" | "User";
 }
 
 const mutations = <MutationTree<UserModuleType>>{
-  setUser(state, { jwt, user }: Required<UserModuleType>) {
+  setUser(state, { jwt, user, type }: Required<UserModuleType>) {
     state.jwt = jwt;
     state.user = user;
+    state.type = type;
   },
 
   clearUser(state) {

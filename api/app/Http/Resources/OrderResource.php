@@ -16,8 +16,8 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'arrive_date' => $this->arrive_date->format('Y-m-d H:i:s'),
-            'departure_date' => $this->arrive_date->format('Y-m-d H:i:s'),
+            'arrive_date' => $this->arrive_date->format('d/m/Y H:i'),
+            'departure_date' => $this->arrive_date->format('d/m/Y H:i'),
             'status' => $this->status,
             'finished' => $this->finished,
             'user' => new UserResource($this->user),

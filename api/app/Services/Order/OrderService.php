@@ -49,7 +49,7 @@ class OrderService
                     ->paginate(self::RESULTS_PER_PAGE);
             }
 
-            $query = $this->getFilters($query, $data);
+            $query = $this->getFilters($query, $data)->orderBy('departure_date', 'desc');
 
             return $query->paginate(self::RESULTS_PER_PAGE);
         } catch (Throwable) {
