@@ -6,7 +6,7 @@
       indeterminate
     ></v-progress-circular>
   </v-overlay>
-  <router-view />
+  <router-view :key="$route.fullPath" />
   <ToastMessage />
 </template>
 
@@ -30,7 +30,7 @@ export default {
     ToastMessage,
   },
   computed: mapState({
-    loading: (state) => state.home.loading,
+    loading: (state) => state.loading,
   }),
 };
 </script>

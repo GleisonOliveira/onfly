@@ -13,11 +13,19 @@ const vuexLocal = new VuexPersister({
 
 export default createStore({
   state: {
-    teste: true,
+    loading: false,
   },
   getters: {},
-  mutations: {},
-  actions: {},
+  mutations: {
+    showLoading(state, visible: boolean) {
+      state.loading = visible;
+    },
+  },
+  actions: {
+    showLoading({ commit }, visible: boolean) {
+      commit("showLoading", visible);
+    },
+  },
   modules: {
     home: HomeModule,
     login: LoginModule,
