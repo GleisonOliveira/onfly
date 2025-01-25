@@ -5,7 +5,9 @@
     </v-col>
     <v-col cols="12" class="text-center pl-15 pr-15"> {{ message }} </v-col>
     <v-col v-if="tryAgain" cols="12" class="text-center pt-5">
-      <v-btn class="text-none" color="#009efb">{{ tryAgainText }}</v-btn>
+      <v-btn class="text-none" @click="tryAgain()" color="#009efb">{{
+        tryAgainText
+      }}</v-btn>
     </v-col>
   </v-row>
 </template>

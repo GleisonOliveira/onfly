@@ -5,6 +5,7 @@ import { LoginModule, LoginModuleType } from "./login";
 import { ToastModule, ToastModuleType } from "./toast";
 import { UserModule, UserModuleType } from "./user";
 import { ModalModule, ModalModuleType } from "./modal";
+import { OrderModule, OrderModuleType } from "./order";
 
 const vuexLocal = new VuexPersister({
   key: "onfly",
@@ -18,6 +19,7 @@ interface RootState {
   login?: LoginModuleType;
   modal?: ModalModuleType;
   toast?: ToastModuleType;
+  order?: OrderModuleType;
 }
 export default createStore<RootState>({
   state: {
@@ -42,6 +44,7 @@ export default createStore<RootState>({
     toast: ToastModule,
     user: UserModule,
     modal: ModalModule,
+    order: OrderModule,
   },
   plugins: [vuexLocal.persist],
 });
