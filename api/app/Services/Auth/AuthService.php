@@ -33,12 +33,12 @@ class AuthService
             $credentials = $loginRequest->validated();
 
             if (! $token = Auth::guard($type->value)->attempt($credentials)) {
-                throw new UnauthorizedException('Usuário ou senha inválido');
+                throw new UnauthorizedException('Usuário ou senha inválido, por favor, verifique as informações e tente nvoamente.');
             }
 
             return new JWTResource($token);
         } catch (Throwable $ex) {
-            throw new UnauthorizedException('Usuário ou senha inválido');
+            throw new UnauthorizedException('Usuário ou senha inválido, por favor, verifique as informações e tente nvoamente.');
         }
     }
 
@@ -62,7 +62,7 @@ class AuthService
             };
 
             if ($userEntity::where('email', $userData['email'])->exists()) {
-                throw new BadRequestHttpException('O usuário está indisponível');
+                throw new BadRequestHttpException('O usuário não está indisponível, por favor informe outro e-mail.');
             }
 
             $user = $userEntity::create([
@@ -76,7 +76,7 @@ class AuthService
         } catch (BadRequestHttpException $ex) {
             throw $ex;
         } catch (Throwable $ex) {
-            throw new InternalErrorException('Não foi possível efetuar o cadastro');
+            throw new InternalErrorException('Não foi possível efetuar o cadastro.');
         }
     }
 }

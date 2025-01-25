@@ -31,7 +31,7 @@ const mutations = <MutationTree<HomeModule>>{
   },
 };
 
-const actions = <ActionTree<HomeModule, any>>{
+const actions = <ActionTree<HomeModule, unknown>>{
   updateDestinations({ commit }, destinations: Destination[]) {
     commit("updateDestinations", destinations);
   },
@@ -53,7 +53,7 @@ const actions = <ActionTree<HomeModule, any>>{
   },
 };
 
-const getters = <GetterTree<HomeModule, any>>{};
+const getters = <GetterTree<HomeModule, unknown>>{};
 
 export const HomeModule = {
   namespaced: true,

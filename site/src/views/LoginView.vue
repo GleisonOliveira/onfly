@@ -5,16 +5,20 @@
   <template v-else>
     <SignUpForm />
   </template>
+  <LoginModal />
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-import LoginForm from "@/components/Login/LoginForm.vue";
-import SignUpForm from "@/components/Login/SignUpForm.vue";
+import LoginForm from "@/components/login/LoginForm.vue";
+import SignUpForm from "@/components/login/SignUpForm.vue";
+import LoginModal from "@/components/login/LoginModal.vue";
+import router from "@/router";
 
 export default {
   components: {
     LoginForm,
     SignUpForm,
+    LoginModal,
   },
   data() {
     return {
@@ -24,8 +28,15 @@ export default {
   methods: {
     ...mapActions(["login/changeType"]),
   },
+  created() {
+    if (localStorage.getItem("onfly.jwt")) {
+      router.push("/");
+      return;
+    }
+  },
   computed: mapState({
-    type: (state) => state.login.type,
+    type: ({ login: { type } }) => type,
+    error: ({ login: { error } }) => error,
   }),
 };
 </script>

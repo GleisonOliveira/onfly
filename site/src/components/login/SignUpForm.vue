@@ -85,7 +85,7 @@
                   size="x-large"
                   @click="this.$store.dispatch('login/changeType', 'login')"
                 >
-                  Cadastre-se
+                  Login
                 </v-btn>
               </div>
             </Form>

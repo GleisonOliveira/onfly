@@ -1,17 +1,18 @@
 import { GetterTree, MutationTree, ActionTree } from "vuex";
-import {
-  signUp as apiSignUp,
-  login as apiLogin,
-  version,
-} from "@/services/api/api";
+import { signUp as apiSignUp, login as apiLogin } from "@/services/api/api";
 import router from "@/router";
 import { Login, SignUp } from "@/types/login";
 
 type LoginType = "login" | "sign";
 
+type ErrorMessage = {
+  title: string;
+  message: string;
+};
 interface LoginModule {
   type: LoginType;
   isSubmitting: boolean;
+  error?: ErrorMessage;
 }
 
 const mutations = <MutationTree<LoginModule>>{
@@ -22,9 +23,13 @@ const mutations = <MutationTree<LoginModule>>{
   setIsSubmitting(state, isSubmitting: boolean) {
     state.isSubmitting = isSubmitting;
   },
+
+  setError(state, error: ErrorMessage) {
+    state.error = error;
+  },
 };
 
-const actions = <ActionTree<LoginModule, any>>{
+const actions = <ActionTree<LoginModule, unknown>>{
   changeType({ commit }, type: LoginType) {
     commit("setIsSubmitting", false);
     commit("changeType", type);
@@ -46,15 +51,11 @@ const actions = <ActionTree<LoginModule, any>>{
       commit("setIsSubmitting", false);
 
       if (!access_token) {
-        dispatch(
-          "toast/showToast",
-          {
-            message: "Houve um erro ao fazer login, tente novamente.",
-            color: "red",
-            icon: "mdi-close-thick",
-          },
-          { root: true }
-        );
+        dispatch("modal/showModal", {}, { root: true });
+        commit("setError", {
+          title: "Acesso não autorizado",
+          message: "Houve um erro ao fazer login, tente novamente.",
+        });
         return;
       }
 
@@ -66,17 +67,13 @@ const actions = <ActionTree<LoginModule, any>>{
     }
 
     commit("setIsSubmitting", false);
-    dispatch(
-      "toast/showToast",
-      {
-        message: error
-          ? error.data?.message
-          : "Houve um erro ao fazer login, tente novamente.",
-        color: "red",
-        icon: "mdi-close-thick",
-      },
-      { root: true }
-    );
+    commit("setError", {
+      title: "Acesso não autorizado",
+      message: error
+        ? error.data?.message
+        : "Houve um erro ao fazer login, tente novamente.",
+    });
+    dispatch("modal/showModal", {}, { root: true });
   },
 
   async signup({ commit, dispatch }, signUpData: SignUp) {
@@ -91,15 +88,11 @@ const actions = <ActionTree<LoginModule, any>>{
       commit("setIsSubmitting", false);
 
       if (!access_token) {
-        dispatch(
-          "toast/showToast",
-          {
-            message: "Houve um erro ao fazer o cadastro, tente novamente.",
-            color: "red",
-            icon: "mdi-close-thick",
-          },
-          { root: true }
-        );
+        dispatch("modal/showModal", {}, { root: true });
+        dispatch("setError", {
+          title: "Erro no cadastro",
+          message: "Houve um erro ao fazer o cadastro, tente novamente.",
+        });
         return;
       }
 
@@ -111,21 +104,17 @@ const actions = <ActionTree<LoginModule, any>>{
     }
 
     commit("setIsSubmitting", false);
-    dispatch(
-      "toast/showToast",
-      {
-        message: error
-          ? error.data?.message
-          : "Houve um erro ao fazer o cadastro, tente novamente.",
-        color: "red",
-        icon: "mdi-close-thick",
-      },
-      { root: true }
-    );
+    commit("setError", {
+      title: "Erro no cadastro",
+      message: error
+        ? error.data?.message
+        : "Houve um erro ao fazer o cadastro, tente novamente.",
+    });
+    dispatch("modal/showModal", {}, { root: true });
   },
 };
 
-const getters = <GetterTree<LoginModule, any>>{};
+const getters = <GetterTree<LoginModule, unknown>>{};
 
 export const LoginModule = {
   namespaced: true,

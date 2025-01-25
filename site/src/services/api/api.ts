@@ -1,5 +1,5 @@
 import { Login, LoginErrorResponse, LoginSuccessResponse } from "@/types/login";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 export const api = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL_API,

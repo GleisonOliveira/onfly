@@ -17,13 +17,13 @@ const mutations = <MutationTree<ToastModule>>{
   },
 };
 
-const actions = <ActionTree<ToastModule, any>>{
+const actions = <ActionTree<ToastModule, unknown>>{
   showToast({ commit }, toast: Toast) {
     commit("showToast", { ...(toast ?? {}), showSnackbar: true });
   },
 };
 
-const getters = <GetterTree<ToastModule, any>>{};
+const getters = <GetterTree<ToastModule, unknown>>{};
 
 export const ToastModule = {
   namespaced: true,

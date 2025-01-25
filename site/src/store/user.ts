@@ -14,7 +14,7 @@ const mutations = <MutationTree<UserModule>>{
   },
 };
 
-const actions = <ActionTree<UserModule, any>>{
+const actions = <ActionTree<UserModule, unknown>>{
   setJwt({ commit }, jwt: string) {
     commit("setJwt", jwt);
   },
@@ -24,7 +24,7 @@ const actions = <ActionTree<UserModule, any>>{
   },
 };
 
-const getters = <GetterTree<UserModule, any>>{};
+const getters = <GetterTree<UserModule, unknown>>{};
 
 export const UserModule = {
   namespaced: true,
