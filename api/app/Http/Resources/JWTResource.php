@@ -15,8 +15,10 @@ class JWTResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'access_token' => $this->resource,
+            'access_token' => $this->resource[0],
             'token_type' => 'bearer',
+            'user' => new UserResource($this->resource[1]),
+            'type' => $this->resource[2]
         ];
     }
 }

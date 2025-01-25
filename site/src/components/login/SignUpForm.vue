@@ -83,7 +83,7 @@
                   class="text-none"
                   color="#009efb"
                   size="x-large"
-                  @click="this.$store.dispatch('login/changeType', 'login')"
+                  @click="changeType('login')"
                 >
                   Login
                 </v-btn>
@@ -112,9 +112,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["login/changeType", "login/signup"]),
+    ...mapActions({ changeType: "login/changeType", signUp: "login/signup" }),
     onSubmit(values) {
-      this.$store.dispatch("login/signup", values);
+      this.signUp(values);
     },
   },
   computed: {

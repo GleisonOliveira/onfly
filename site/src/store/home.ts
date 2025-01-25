@@ -7,13 +7,13 @@ type Destination = {
   airport: string;
 };
 
-interface HomeModule {
+export interface HomeModuleType {
   destinations: Destination[];
   loading: boolean;
   error: boolean;
 }
 
-const mutations = <MutationTree<HomeModule>>{
+const mutations = <MutationTree<HomeModuleType>>{
   updateDestinations(state, destinations: Destination[]) {
     state.destinations = destinations;
   },
@@ -31,7 +31,7 @@ const mutations = <MutationTree<HomeModule>>{
   },
 };
 
-const actions = <ActionTree<HomeModule, unknown>>{
+const actions = <ActionTree<HomeModuleType, unknown>>{
   updateDestinations({ commit }, destinations: Destination[]) {
     commit("updateDestinations", destinations);
   },
@@ -53,7 +53,7 @@ const actions = <ActionTree<HomeModule, unknown>>{
   },
 };
 
-const getters = <GetterTree<HomeModule, unknown>>{};
+const getters = <GetterTree<HomeModuleType, unknown>>{};
 
 export const HomeModule = {
   namespaced: true,

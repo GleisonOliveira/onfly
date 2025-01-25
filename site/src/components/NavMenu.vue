@@ -8,14 +8,34 @@
           </router-link>
         </v-col>
         <v-col sm="8" id="links">
-          <router-link to="/login" class="menu-item"
-            ><v-icon icon="mdi-home" /> MINHA CONTA</router-link
+          <router-link :to="url" class="menu-item"
+            ><v-icon icon="mdi-account" /> MINHA CONTA</router-link
           >
         </v-col>
       </v-row>
     </v-container>
   </nav>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import { mapState } from "vuex";
+
+export default defineComponent({
+  computed: {
+    ...mapState({
+      user: ({ user: { user } }) => user,
+    }),
+    url() {
+      if (!this.user || !localStorage.getItem(process.env.VUE_APP_JWT_NAME)) {
+        return "/login";
+      }
+
+      return "/dashboard";
+    },
+  },
+});
+</script>
 
 <style lang="scss" scoped>
 #logo {

@@ -36,7 +36,9 @@ class AuthService
                 throw new UnauthorizedException('Usuário ou senha inválido, por favor, verifique as informações e tente nvoamente.');
             }
 
-            return new JWTResource($token);
+            $user = Auth::guard($type->value)->user();
+
+            return new JWTResource([$token, $user, $type->name]);
         } catch (Throwable $ex) {
             throw new UnauthorizedException('Usuário ou senha inválido, por favor, verifique as informações e tente nvoamente.');
         }
@@ -72,7 +74,7 @@ class AuthService
 
             $token = JWTAuth::fromUser($user);
 
-            return new JWTResource($token);
+            return new JWTResource([$token, $user, $type->name]);
         } catch (BadRequestHttpException $ex) {
             throw $ex;
         } catch (Throwable $ex) {

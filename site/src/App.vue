@@ -6,7 +6,7 @@
       indeterminate
     ></v-progress-circular>
   </v-overlay>
-  <router-view :key="$route.fullPath" />
+  <router-view />
   <ToastMessage />
 </template>
 
@@ -23,7 +23,7 @@ body {
 </style>
 <script>
 import { mapState } from "vuex";
-import ToastMessage from "./components/ToastMessage.vue";
+import ToastMessage from "./components//dialogs/ToastMessage.vue";
 
 export default {
   components: {

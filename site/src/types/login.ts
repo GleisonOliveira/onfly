@@ -9,10 +9,17 @@ export type SignUp = {
   password: string;
 };
 
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 export type LoginSuccessResponse = {
   data: {
     access_token: string;
     token_type: string;
+    user: User;
   };
 };
 

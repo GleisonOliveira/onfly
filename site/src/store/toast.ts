@@ -7,23 +7,23 @@ type Toast = {
   icon?: string;
   showSnackbar?: boolean;
 };
-interface ToastModule {
+export interface ToastModuleType {
   toast: Toast;
 }
 
-const mutations = <MutationTree<ToastModule>>{
+const mutations = <MutationTree<ToastModuleType>>{
   showToast(state, toast: Toast) {
     state.toast = { ...state.toast, ...toast, showSnackbar: true };
   },
 };
 
-const actions = <ActionTree<ToastModule, unknown>>{
+const actions = <ActionTree<ToastModuleType, unknown>>{
   showToast({ commit }, toast: Toast) {
     commit("showToast", { ...(toast ?? {}), showSnackbar: true });
   },
 };
 
-const getters = <GetterTree<ToastModule, unknown>>{};
+const getters = <GetterTree<ToastModuleType, unknown>>{};
 
 export const ToastModule = {
   namespaced: true,

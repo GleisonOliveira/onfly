@@ -31,7 +31,7 @@ describe('Admin Login', function () {
         $authService->login($this->loginRequest, AuthType::Admin);
     })->throws(UnauthorizedException::class);
 
-    test('Should return jwt token', function () {
+    test('Should return jwt token and user', function () {
         $authService = new AuthService();
 
         AdmUser::create([
@@ -60,7 +60,7 @@ describe('Admin Signup', function () {
         $authService->signUp($this->signUpRequest, AuthType::Admin);
     })->throws(BadRequestHttpException::class);
 
-    test('Should return jwt token', function () {
+    test('Should return jwt token and user', function () {
         $authService = new AuthService();
         $newAdmUser = ['email' => 'new@email.com', 'password' => '12356', 'name' => 'Usuario'];
 

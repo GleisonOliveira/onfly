@@ -66,7 +66,7 @@
                   class="text-none"
                   color="#009efb"
                   size="x-large"
-                  @click="this.$store.dispatch('login/changeType', 'sign')"
+                  @click="changeType('sign')"
                 >
                   Cadastre-se
                 </v-btn>
@@ -95,9 +95,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["login/changeType", "login/login"]),
+    ...mapActions({
+      changeType: "login/changeType",
+      login: "login/login",
+    }),
     onSubmit(values) {
-      this.$store.dispatch("login/login", values);
+      this.login(values);
     },
   },
   computed: {

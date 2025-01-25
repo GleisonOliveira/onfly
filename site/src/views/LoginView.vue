@@ -8,7 +8,7 @@
   <LoginModal />
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 import LoginForm from "@/components/login/LoginForm.vue";
 import SignUpForm from "@/components/login/SignUpForm.vue";
 import LoginModal from "@/components/login/LoginModal.vue";
@@ -24,9 +24,6 @@ export default {
     return {
       showPassword: false,
     };
-  },
-  methods: {
-    ...mapActions(["login/changeType"]),
   },
   created() {
     if (localStorage.getItem(process.env.VUE_APP_JWT_NAME)) {

@@ -1,30 +1,37 @@
+import router from "@/router";
+import { User } from "@/types/login";
 import { GetterTree, MutationTree, ActionTree } from "vuex";
 
-interface UserModule {
+export interface UserModuleType {
   jwt?: string;
+  user?: User;
 }
 
-const mutations = <MutationTree<UserModule>>{
-  setJwt(state, jwt: string) {
+const mutations = <MutationTree<UserModuleType>>{
+  setUser(state, { jwt, user }: Required<UserModuleType>) {
     state.jwt = jwt;
+    state.user = user;
   },
 
-  clearJwt(state) {
+  clearUser(state) {
     state.jwt = undefined;
+    state.user = undefined;
   },
 };
 
-const actions = <ActionTree<UserModule, unknown>>{
-  setJwt({ commit }, jwt: string) {
-    commit("setJwt", jwt);
+const actions = <ActionTree<UserModuleType, unknown>>{
+  setUser({ commit }, user: Required<UserModuleType>) {
+    commit("setUser", user);
   },
 
-  clearJwt({ commit }) {
-    commit("clearJwt");
+  clearUser({ commit }) {
+    commit("clearUser");
+    localStorage.removeItem(process.env.VUE_APP_JWT_NAME);
+    router.push("/");
   },
 };
 
-const getters = <GetterTree<UserModule, unknown>>{};
+const getters = <GetterTree<UserModuleType, unknown>>{};
 
 export const UserModule = {
   namespaced: true,

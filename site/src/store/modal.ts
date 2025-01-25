@@ -4,11 +4,11 @@ type Modal = {
   width?: string | number;
   showModal?: boolean;
 };
-interface ModalModule {
+export interface ModalModuleType {
   modal: Modal;
 }
 
-const mutations = <MutationTree<ModalModule>>{
+const mutations = <MutationTree<ModalModuleType>>{
   showModal(state, modal: Modal) {
     state.modal = { ...state.modal, ...modal, showModal: true };
   },
@@ -17,7 +17,7 @@ const mutations = <MutationTree<ModalModule>>{
   },
 };
 
-const actions = <ActionTree<ModalModule, unknown>>{
+const actions = <ActionTree<ModalModuleType, unknown>>{
   showModal({ commit }, modal: Modal) {
     commit("showModal", { ...(modal ?? {}) });
   },
@@ -26,7 +26,7 @@ const actions = <ActionTree<ModalModule, unknown>>{
   },
 };
 
-const getters = <GetterTree<ModalModule, unknown>>{};
+const getters = <GetterTree<ModalModuleType, unknown>>{};
 
 export const ModalModule = {
   namespaced: true,

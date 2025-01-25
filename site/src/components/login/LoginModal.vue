@@ -14,7 +14,7 @@
               class="ms-auto text-none"
               text="Fechar"
               color="#009efb"
-              @click="this.$store.dispatch('modal/hideModal')"
+              @click="hideModal()"
             ></v-btn>
           </v-col>
         </v-row>
@@ -25,7 +25,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import DialogModal from "@/components/DialogModal.vue";
+import DialogModal from "@/components//dialogs/DialogModal.vue";
 
 export default {
   components: {
@@ -37,7 +37,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["login/changeType", "modal/hideModal"]),
+    ...mapActions({
+      hideModal: "modal/hideModal",
+    }),
   },
   computed: mapState({
     error: ({ login: { error } }) => error,

@@ -9,13 +9,13 @@ type ErrorMessage = {
   title: string;
   message: string;
 };
-interface LoginModule {
+export interface LoginModuleType {
   type: LoginType;
   isSubmitting: boolean;
   error?: ErrorMessage;
 }
 
-const mutations = <MutationTree<LoginModule>>{
+const mutations = <MutationTree<LoginModuleType>>{
   changeType(state, type: LoginType) {
     state.type = type;
   },
@@ -29,7 +29,7 @@ const mutations = <MutationTree<LoginModule>>{
   },
 };
 
-const actions = <ActionTree<LoginModule, unknown>>{
+const actions = <ActionTree<LoginModuleType, unknown>>{
   changeType({ commit }, type: LoginType) {
     commit("setIsSubmitting", false);
     commit("changeType", type);
@@ -44,13 +44,11 @@ const actions = <ActionTree<LoginModule, unknown>>{
     const [response, error] = await apiLogin(loginData);
 
     if (response) {
-      const {
-        data: { access_token },
-      } = response;
+      const { data } = response;
 
       commit("setIsSubmitting", false);
 
-      if (!access_token) {
+      if (!data.access_token) {
         dispatch("modal/showModal", {}, { root: true });
         commit("setError", {
           title: "Acesso não autorizado",
@@ -59,9 +57,9 @@ const actions = <ActionTree<LoginModule, unknown>>{
         return;
       }
 
-      localStorage.setItem(process.env.VUE_APP_JWT_NAME, access_token);
-      dispatch("user/setJwt", access_token, { root: true });
-      router.push("/");
+      localStorage.setItem(process.env.VUE_APP_JWT_NAME, data.access_token);
+      dispatch("user/setUser", data, { root: true });
+      router.push("/dashboard");
 
       return;
     }
@@ -81,13 +79,11 @@ const actions = <ActionTree<LoginModule, unknown>>{
     const [response, error] = await apiSignUp(signUpData);
 
     if (response) {
-      const {
-        data: { access_token },
-      } = response;
+      const { data } = response;
 
       commit("setIsSubmitting", false);
 
-      if (!access_token) {
+      if (!data.access_token) {
         dispatch("modal/showModal", {}, { root: true });
         dispatch("setError", {
           title: "Erro no cadastro",
@@ -96,9 +92,9 @@ const actions = <ActionTree<LoginModule, unknown>>{
         return;
       }
 
-      localStorage.setItem(process.env.VUE_APP_JWT_NAME, access_token);
-      dispatch("user/setJwt", access_token, { root: true });
-      router.push("/");
+      localStorage.setItem(process.env.VUE_APP_JWT_NAME, data.access_token);
+      dispatch("user/setUser", data, { root: true });
+      router.push("/dashboard");
 
       return;
     }
@@ -114,7 +110,7 @@ const actions = <ActionTree<LoginModule, unknown>>{
   },
 };
 
-const getters = <GetterTree<LoginModule, unknown>>{};
+const getters = <GetterTree<LoginModuleType, unknown>>{};
 
 export const LoginModule = {
   namespaced: true,
