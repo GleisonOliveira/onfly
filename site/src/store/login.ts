@@ -59,7 +59,7 @@ const actions = <ActionTree<LoginModule, unknown>>{
         return;
       }
 
-      localStorage.setItem("onfly.jwt", access_token);
+      localStorage.setItem(process.env.VUE_APP_JWT_NAME, access_token);
       dispatch("user/setJwt", access_token, { root: true });
       router.push("/");
 
@@ -96,7 +96,7 @@ const actions = <ActionTree<LoginModule, unknown>>{
         return;
       }
 
-      localStorage.setItem("onfly.jwt", access_token);
+      localStorage.setItem(process.env.VUE_APP_JWT_NAME, access_token);
       dispatch("user/setJwt", access_token, { root: true });
       router.push("/");
 

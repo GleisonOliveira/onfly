@@ -1,3 +1,4 @@
+import router from "@/router";
 import { Login, LoginErrorResponse, LoginSuccessResponse } from "@/types/login";
 import axios from "axios";
 
@@ -5,6 +6,32 @@ export const api = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL_API,
 });
 
+api.interceptors.request.use(
+  function (config) {
+    const token = localStorage.getItem(process.env.VUE_APP_JWT_NAME);
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  function (response) {
+    if (response.status === 421) {
+      localStorage.removeItem(process.env.VUE_APP_JWT_NAME);
+      router.push("/login");
+    }
+    return response;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
 type AxiosRequestResponse<T, E> = Promise<[T?, E?, unknown?]>;
 
 export const version = "api/v1";

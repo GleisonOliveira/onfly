@@ -29,7 +29,7 @@ export default {
     ...mapActions(["login/changeType"]),
   },
   created() {
-    if (localStorage.getItem("onfly.jwt")) {
+    if (localStorage.getItem(process.env.VUE_APP_JWT_NAME)) {
       router.push("/");
       return;
     }
