@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\DestinationResource;
 use App\Services\Destination\DestinationService;
-
+use Illuminate\Http\Request;
 
 class DestinationController extends Controller
 {
@@ -15,10 +15,12 @@ class DestinationController extends Controller
      * 
      * @response Illuminate\Http\Resources\Json\AnonymousResourceCollection<Illuminate\Pagination\LengthAwarePaginator<DestinationResource>>
      */
-    public function index()
+    public function index(Request $request)
     {
+        $page = $request->only('page')['page'] ?? 1;
+        
         return DestinationResource::collection(
-            $this->destinationService->list()
+            $this->destinationService->list($page)
         );
     }
 }

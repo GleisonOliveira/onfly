@@ -4,10 +4,9 @@ Esse repositório faz parte do teste para desenvolvedor full stack senior na emp
 ## Como rodar o projeto
 1. Clone o projeto na sua maquina (e garanta que o docker esteja devidamente instalado e funcionando [https://docs.docker.com/get-started/get-docker/](https://docs.docker.com/get-started/get-docker/))
 2. Abra a pasta `api` e crie uma cópia do arquivo `.env.example` e altere seu nome para `.env`
-3. Na raiz do projeto, abra um terminal e utilize o seguinte comando `docker compose -f docker-compose-deps.yml up -d` (irá iniciar os containers necessários para a instaação de dependencias)
-4. Na raiz do projeto, abra um terminal e utilize o seguinte comando `docker compose -f docker-compose-deps.yml up -d` (irá iniciar os containers necessários para a instaação de dependencias), aguarde ate que os containers `onfly-composer-1` e `onfly-node-1` sejam encerrados
-5. Aguarde até que as dependencias tenham sido instaladas (aguarde até que os containers `onfly-composer-1` e `onfly-node-1` sejam encerrados,
-6. Na raiz do projeto, utilize o seguinte comando `docker compose up -d` esse processo pode demorar e irá iniciar os containers das aplicações
+3. Na raiz do projeto, abra um terminal e utilize o seguinte comando `docker compose -f docker-compose-deps.yml up -d` (irá iniciar os containers necessários para a instaação de dependencias), aguarde ate que os containers `onfly-composer-1` e `onfly-node-1` sejam encerrados
+4. Aguarde até que as dependencias tenham sido instaladas (aguarde até que os containers `onfly-composer-1` e `onfly-node-1` sejam encerrados,
+5. Na raiz do projeto, utilize o seguinte comando `docker compose up -d` esse processo pode demorar e irá iniciar os containers das aplicações
 
 > Obs.: Ambas as aplicações estão configuradas para funcionar no modo dev, isso significa que otimizações de velocidade não serão aplciadas, alem de que ferramentas instrumentadas para desenvolvimento, continuarão rodando, como o caso de debuggers, linters, opcache, e etc...
 

@@ -1,0 +1,18 @@
+:root {
+    --blue: #1f6391;
+    --orange: #ff5a05;
+    --gray: #737373;
+}
+
+body {
+    color: var(--gray);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--blue);
+}

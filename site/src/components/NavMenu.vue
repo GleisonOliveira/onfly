@@ -8,14 +8,13 @@
           </router-link>
         </v-col>
         <v-col sm="8" id="links">
-          <router-link to="/" class="menu-item"
+          <router-link to="/login" class="menu-item"
             ><v-icon icon="mdi-home" /> MINHA CONTA</router-link
           >
         </v-col>
       </v-row>
     </v-container>
   </nav>
-  <nav></nav>
 </template>
 
 <style lang="scss" scoped>
@@ -24,17 +23,17 @@
   max-width: 100px;
 }
 .menu-item {
-  color: #1f6391;
+  color: var(--blue);
   transition: 350ms;
   text-decoration: none;
   font-weight: normal;
-  border: solid 2px #1f6391;
+  border: solid 2px var(--blue);
   border-radius: 56px;
   padding: 10px 20px;
   &:hover {
-    background-color: #ff5a05;
+    background-color: var(--orange);
     color: white;
-    border-color: #ff5a05;
+    border-color: var(--orange);
   }
 }
 #links {

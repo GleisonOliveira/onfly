@@ -28,3 +28,31 @@ export default defineComponent({
   },
 });
 </script>
+
+<!-- <v-row no-gutters v-if="!loading && error">
+  <v-col
+    >Houve um erro ao carregar os dados, por favor tente novamente.</v-col
+  >
+</v-row> -->
+
+<!-- <script>
+import { mapActions, mapState } from "vuex";
+import NavMenu from "./components/NavMenu.vue";
+
+export default {
+  components: {
+    NavMenu,
+  },
+  methods: {
+    ...mapActions(["home/changeMainLoadingVisibility"]),
+  },
+  computed: mapState({
+    loading: (state) => state.home.loading,
+    error: (state) => state.home.error,
+  }),
+  created() {
+    this.$store.dispatch("home/changeMainLoadingVisibility", false);
+    this.$store.dispatch("home/getDestinations");
+  },
+};
+</script> -->

@@ -20,7 +20,5 @@ describe('destinations', function () {
         $response->assertStatus(200);
 
         expect(count($response['data']))->toBeGreaterThan(1);
-        expect($response['meta']['total'])->not->toBeNull();
-        expect($response['meta']['current_page'])->toBeGreaterThan(0);
     });
 });

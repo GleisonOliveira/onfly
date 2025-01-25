@@ -57,7 +57,7 @@ const getters = <GetterTree<HomeModule, any>>{};
 
 export const HomeModule = {
   namespaced: true,
-  state: () => ({ destinations: [], error: false, loading: true }),
+  state: () => ({ destinations: [], error: false, loading: false }),
   mutations: mutations,
   actions: actions,
   getters: getters,
