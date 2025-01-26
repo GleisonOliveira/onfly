@@ -19,10 +19,10 @@ export type OrderResponse = {
 };
 
 export type OrderFilters = {
-  page: number;
+  page?: number;
   id?: string;
   name?: string;
-  status?: Pick<Order, "status">;
+  status?: Pick<Order, "status"> | "all" | undefined;
   departure_date?: string;
   arrive_date?: string;
 };

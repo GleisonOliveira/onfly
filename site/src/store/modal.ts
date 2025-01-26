@@ -1,26 +1,10 @@
 import { Modal } from "@/types/modal";
-import { GetterTree, MutationTree, ActionTree } from "vuex";
+import { GetterTree } from "vuex";
+import { actions } from "./modal/actions";
+import { mutations } from "./modal/mutations";
 export interface ModalModuleType {
   modal: Modal;
 }
-
-const mutations = <MutationTree<ModalModuleType>>{
-  showModal(state, modal: Modal) {
-    state.modal = { ...state.modal, ...modal, showModal: true };
-  },
-  hideModal(state) {
-    state.modal = { ...state.modal, showModal: false };
-  },
-};
-
-const actions = <ActionTree<ModalModuleType, unknown>>{
-  showModal({ commit }, modal: Modal) {
-    commit("showModal", { ...(modal ?? {}) });
-  },
-  hideModal({ commit }) {
-    commit("hideModal");
-  },
-};
 
 const getters = <GetterTree<ModalModuleType, unknown>>{};
 

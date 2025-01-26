@@ -40,14 +40,9 @@ class OrderService
         try {
             $data = $userOrderFilters->validated();
             $query = Order::with('destination')
+                ->select("*", "orders.id as orderId")
                 ->with('user')
                 ->where('user_id', $user->id);
-
-            if (!empty($data['id'])) {
-                return $query
-                    ->where('id', $data['id'])
-                    ->paginate(self::RESULTS_PER_PAGE);
-            }
 
             $query = $this->getFilters($query, $data)->orderBy('departure_date', 'desc');
 
@@ -71,13 +66,8 @@ class OrderService
         try {
             $data = $userOrderFilters->validated();
             $query = Order::with('destination')
+                ->select("*", "orders.id as orderId")
                 ->with('user');
-
-            if (!empty($data['id'])) {
-                return $query
-                    ->where('id', $data['id'])
-                    ->paginate(self::RESULTS_PER_PAGE);
-            }
 
             $query = $this->getFilters($query, $data);
 
@@ -160,10 +150,21 @@ class OrderService
             }
         });
 
-        if (!empty($data['name'])) {
-            $query->where('order.destination.name', 'like', $data['name']);
+        if (!empty($data['id'])) {
+            $query->where('orders.id', $data['id']);
         }
 
-        return $query;
+        if (!empty($data['name'])) {
+            $query
+                ->join('users', 'orders.user_id', '=', 'users.id')
+                ->join('destinations', 'orders.destination_id', '=', 'destinations.id')
+                ->where(function ($query) use ($data) {
+                    $query
+                        ->where('users.name', 'ILIKE', "%{$data['name']}%")
+                        ->orWhere('destinations.name', 'ILIKE', "%{$data['name']}%");
+                });
+        }
+
+        return $query->orderBy("orders.departure_date", "asc");
     }
 }

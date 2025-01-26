@@ -13,7 +13,7 @@
           :id="id"
           v-model="formattedDate"
           :prepend-inner-icon="prependInnerIcon"
-          :variant="variant"
+          variant="outlined"
           :error-messages="errorMessages"
           :placeholder="placeholder"
           readonly
@@ -30,9 +30,8 @@
           :max="max"
         ></v-date-picker>
         <v-card-actions class="d-flex justify-end">
-          <v-btn text @click="cancel">Cancelar</v-btn>
+          <v-btn @click="cancel">Cancelar</v-btn>
           <v-btn
-            text
             @click="confirm"
             color="#009efb"
             class="blue--text text--darken-2"
@@ -46,15 +45,15 @@
 
 <script lang="ts">
 import { format } from "date-fns";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   props: {
     prependIcon: {
       type: String,
       default: "",
     },
     errorMessages: {
-      type: Array,
       default: () => [],
     },
     format: {
@@ -68,10 +67,6 @@ export default {
     prependInnerIcon: {
       type: String,
       default: "mdi-calendar",
-    },
-    variant: {
-      type: String,
-      default: "outlined",
     },
     placeholder: {
       type: String,
@@ -117,5 +112,5 @@ export default {
       this.menu = false;
     },
   },
-};
+});
 </script>

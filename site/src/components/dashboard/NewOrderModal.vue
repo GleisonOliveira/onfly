@@ -18,12 +18,11 @@
           <v-locale-provider locale="pt">
             <v-row>
               <v-col cols="6" class="pt-0 pb-0">
-                <Field name="dep_date" v-slot="{ field, errors }">
+                <Field name="dep_date" v-slot="{ field }">
                   <label for="dep_date">Data de partida</label>
                   <DatePicker
                     id="dep_date"
                     v-bind="field"
-                    :error-messages="errors"
                     :min="today"
                     :date="dep_date"
                     @onSelectDate="
@@ -36,12 +35,11 @@
                 </Field>
               </v-col>
               <v-col cols="6" class="pt-0 pb-0">
-                <Field name="arrive_date" v-slot="{ field, errors }">
+                <Field name="arrive_date" v-slot="{ field }">
                   <label for="arrive_date">Data de chegada</label>
                   <DatePicker
                     id="arrive_date"
                     v-bind="field"
-                    :error-messages="errors"
                     :min="dep_date"
                     :date="arrive_date"
                     @onSelectDate="
@@ -65,8 +63,8 @@
                     item-value="id"
                     placeholder="Escolha um destino"
                     :items="destinations"
-                    v-bind="field"
                     :error-messages="errors"
+                    v-bind="field"
                     variant="outlined"
                     @update:modelValue="(destinationId: string) => {
                         setDestinationId(destinationId);

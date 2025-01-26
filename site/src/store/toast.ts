@@ -1,21 +1,11 @@
 import { Toast } from "@/types/toast";
-import { GetterTree, MutationTree, ActionTree } from "vuex";
+import { GetterTree } from "vuex";
+import { mutations } from "./toast/mutations";
+import { actions } from "./toast/actions";
 
 export interface ToastModuleType {
   toast: Toast;
 }
-
-const mutations = <MutationTree<ToastModuleType>>{
-  showToast(state, toast: Toast) {
-    state.toast = { ...state.toast, ...toast, showSnackbar: true };
-  },
-};
-
-const actions = <ActionTree<ToastModuleType, unknown>>{
-  showToast({ commit }, toast: Toast) {
-    commit("showToast", { ...(toast ?? {}), showSnackbar: true });
-  },
-};
 
 const getters = <GetterTree<ToastModuleType, unknown>>{};
 

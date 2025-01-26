@@ -28,6 +28,7 @@ class UserOrderFilters extends BaseRequest
             'destination_id' => 'uuid',
             'departure_date' => 'date_format:Y-m-d H:i:s',
             'arrive_date' => 'date_format:Y-m-d H:i:s',
+            'name' => 'min:0|max:255',
         ];
     }
 }

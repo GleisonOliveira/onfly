@@ -3,7 +3,7 @@ import { getAxiosError, version } from "./api";
 import { AxiosRequestResponse, ErrorResponse } from "@/types/api";
 import { DestinationResponse } from "@/types/destination";
 
-const getDestinatios =
+const getDestinations =
   (api: AxiosInstance) =>
   async (): AxiosRequestResponse<DestinationResponse, ErrorResponse> => {
     try {
@@ -17,4 +17,4 @@ const getDestinatios =
     }
   };
 
-export { getDestinatios };
+export { getDestinations };
