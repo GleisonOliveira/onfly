@@ -101,6 +101,9 @@ export default {
     this.selectedDate = this.date ?? this.selectedDate;
     this.updateFormattedDate(this.date ?? this.selectedDate);
   },
+  updated() {
+    this.updateFormattedDate(this.date ?? this.selectedDate);
+  },
   methods: {
     updateFormattedDate(dateToFormat: Date) {
       this.formattedDate = format(dateToFormat, this.format);

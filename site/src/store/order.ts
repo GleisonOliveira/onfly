@@ -1,16 +1,16 @@
 import { api } from "@/services/api/api";
-import { getOrders } from "@/services/api/order";
+import { createOrder, getOrders } from "@/services/api/order";
 import { Order } from "@/types/order";
 import { Meta } from "@/types/paginating";
 import { GetterTree, MutationTree, ActionTree } from "vuex";
-import { addDays } from "date-fns";
+import { addDays, format, set } from "date-fns";
 
 export interface OrderModuleType {
   order: {
-    departure_date: Date;
     arrive_date: Date;
+    dep_date: Date;
     today: Date;
-    destination_id: Date;
+    destination_id: string;
   };
   showModal: boolean;
   loading: boolean;
@@ -32,8 +32,12 @@ const mutations = <MutationTree<OrderModuleType>>{
     state.order.arrive_date = date;
   },
 
+  setDestinationId(state, destinationId: string) {
+    state.order.destination_id = destinationId;
+  },
+
   setDepartureDate(state, date: Date) {
-    state.order.departure_date = date;
+    state.order.dep_date = date;
   },
 
   showModal(state, visible: boolean) {
@@ -72,8 +76,31 @@ const actions = <ActionTree<OrderModuleType, unknown>>{
     commit("setArriveDate", date);
   },
 
-  setDepartureDate({ commit }, date: Date) {
+  setDepartureDate(
+    {
+      commit,
+      state: {
+        order: { arrive_date },
+      },
+    },
+    {
+      date,
+      setFieldValue,
+    }: { date: Date; setFieldValue?: (f: string, value: unknown) => void }
+  ) {
     commit("setDepartureDate", date);
+    if (setFieldValue) {
+      setFieldValue("dep_date", date);
+    }
+
+    if (setFieldValue && arrive_date <= date) {
+      setFieldValue("arrive_date", addDays(date, 1));
+      commit("setArriveDate", addDays(date, 1));
+    }
+  },
+
+  setDestinationId({ commit }, destinationId: string) {
+    commit("setDestinationId", destinationId);
   },
 
   showModal({ commit, dispatch }, visible: boolean) {
@@ -108,6 +135,44 @@ const actions = <ActionTree<OrderModuleType, unknown>>{
     commit("setMeta", meta);
     commit("setLoading", false);
   },
+
+  async createOrder({
+    dispatch,
+    state: {
+      order: { arrive_date, destination_id, dep_date },
+    },
+  }) {
+    const [response, error] = await createOrder(api)({
+      departure_date: format(
+        set(dep_date, { hours: 0, minutes: 0, seconds: 0 }),
+        "yyyy-MM-dd HH:mm:ss"
+      ),
+      arrive_date: format(
+        set(arrive_date, { hours: 0, minutes: 0, seconds: 0 }),
+        "yyyy-MM-dd HH:mm:ss"
+      ),
+      destination_id: destination_id,
+    });
+
+    if (error || !response || !response.data) {
+      dispatch(
+        "toast/showToast",
+        {
+          icon: "mdi-close-circle-outline",
+          color: "error",
+          message: error
+            ? error.data?.message
+            : "Houve um erro ao buscar criar seu pedido, tente novamente.",
+        },
+        { root: true }
+      );
+
+      return;
+    }
+
+    dispatch("order/getOrders", null, { root: true });
+    dispatch("order/showModal", false, { root: true });
+  },
 };
 
 const getters = <GetterTree<OrderModuleType, unknown>>{};
@@ -116,8 +181,8 @@ export const OrderModule = {
   namespaced: true,
   state: () => ({
     order: {
-      departure_date: new Date(),
-      arrive_date: addDays(new Date(), 1),
+      dep_date: addDays(new Date(), 1),
+      arrive_date: addDays(new Date(), 2),
       today: new Date(),
       destination_id: null,
     },

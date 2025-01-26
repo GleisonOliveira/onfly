@@ -27,13 +27,9 @@
 import { mapActions, mapState } from "vuex";
 import DialogModal from "@/components//dialogs/DialogModal.vue";
 import { RootState } from "@/store";
-import { ErrorMessage } from "@/store/login";
 import { defineComponent } from "vue";
 
-interface LoginModalData {
-  error: ErrorMessage;
-}
-export default defineComponent<LoginModalData>({
+export default defineComponent({
   components: {
     DialogModal,
   },
@@ -47,8 +43,8 @@ export default defineComponent<LoginModalData>({
       hideModal: "modal/hideModal",
     }),
   },
-  computed: mapState<LoginModalData>({
-    error: ({ login: { error } }: RootState) => error,
+  computed: mapState({
+    error: (state: unknown) => (state as RootState).login.error,
   }),
 });
 </script>

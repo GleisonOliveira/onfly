@@ -1,6 +1,6 @@
 <template>
   <v-dialog width="600px" v-model="show">
-    <v-card title="Novo pedido">
+    <v-card title="Nova reserva">
       <v-card-text class="pt-4">
         <ErrorComponent
           v-if="!loading && error"
@@ -10,29 +10,28 @@
         <LoadingComponent v-if="loading" />
         <Form
           v-else
-          @submit="submit"
+          @submit="createOrder"
           :initial-values="initialValues"
           :validation-schema="schema"
-          v-slot="{ values, setFieldValue }"
+          v-slot="{ setFieldValue, isSubmitting }"
         >
-          {{ values }}
           <v-locale-provider locale="pt">
             <v-row>
               <v-col cols="6" class="pt-0 pb-0">
-                <Field name="departure_date" v-slot="{ field, errors }">
-                  <label for="departure_date">Data de partida</label>
+                <Field name="dep_date" v-slot="{ field, errors }">
+                  <label for="dep_date">Data de partida</label>
                   <DatePicker
-                    id="departure_date"
+                    id="dep_date"
                     v-bind="field"
                     :error-messages="errors"
-                    :min="departure_date"
+                    :min="today"
+                    :date="dep_date"
                     @onSelectDate="
                       (date: Date) => {
-                        setDepartureDate(date);
-                        setFieldValue('departure_date', date);
+                        setDepartureDate({date, setFieldValue});
                       }
                     "
-                    v-model="departure_date"
+                    v-model="dep_date"
                   />
                 </Field>
               </v-col>
@@ -43,7 +42,7 @@
                     id="arrive_date"
                     v-bind="field"
                     :error-messages="errors"
-                    :min="departure_date"
+                    :min="dep_date"
                     :date="arrive_date"
                     @onSelectDate="
                       (date: Date) => {
@@ -51,7 +50,7 @@
                         setFieldValue('arrive_date', date);
                       }
                     "
-                    v-model="departure_date"
+                    v-model="arrive_date"
                   />
                 </Field>
               </v-col>
@@ -69,6 +68,10 @@
                     v-bind="field"
                     :error-messages="errors"
                     variant="outlined"
+                    @update:modelValue="(destinationId: string) => {
+                        setDestinationId(destinationId);
+                        setFieldValue('destination_id', destinationId);
+                      }"
                   ></v-select>
                 </Field>
               </v-col>
@@ -77,7 +80,7 @@
               <v-col cols="12" class="pt-0 pb-2 text-right">
                 <v-btn
                   prepend-icon="mdi-content-save-check"
-                  :disabled="loading || error"
+                  :disabled="loading || error || isSubmitting"
                   class="text-none"
                   color="#009efb"
                   type="submit"
@@ -113,10 +116,9 @@ export default defineComponent({
   computed: {
     ...mapState({
       error: (state: unknown) => (state as RootState).destinations.error,
-      departure_date: (state: unknown) =>
-        (state as RootState).order.order.departure_date,
       arrive_date: (state: unknown) =>
         (state as RootState).order.order.arrive_date,
+      dep_date: (state: unknown) => (state as RootState).order.order.dep_date,
       today: (state: unknown) => (state as RootState).order.order.today,
       errorMessage: (state: unknown) =>
         (state as RootState).destinations.errorMessage,
@@ -126,14 +128,16 @@ export default defineComponent({
           id: destination.id,
           title: `${destination.name} - ${destination.airport}`,
         })),
-      initialValues: (state: unknown) => ({
-        departure_date: (state as RootState).order.order.departure_date,
-        arrive_date: (state as RootState).order.order.arrive_date,
-      }),
+      initialValues: (state: unknown) => {
+        return {
+          dep_date: (state as RootState).order.order.dep_date,
+          arrive_date: (state as RootState).order.order.arrive_date,
+        };
+      },
     }),
     schema() {
       return yup.object({
-        daparture_date: yup
+        dep_date: yup
           .date()
           .required("A data de partida é obrigatória.")
           .min(
@@ -144,7 +148,7 @@ export default defineComponent({
           .date()
           .required("A data de chegada é obrigatória.")
           .min(
-            this.departure_date,
+            this.dep_date,
             "A data de partida deve ser maior que a data de partida."
           ),
         destination_id: yup
@@ -166,11 +170,11 @@ export default defineComponent({
     ...mapActions({
       showModal: "order/showModal",
       setArriveDate: "order/setArriveDate",
+      setDestinationId: "order/setDestinationId",
       setDepartureDate: "order/setDepartureDate",
+      createOrder: "order/createOrder",
       getDestinations: "destinations/getDestinations",
     }),
-    submit: (values: unknown) => console.log(values),
-    emitiu: () => console.log("emitu"),
   },
 });
 </script>

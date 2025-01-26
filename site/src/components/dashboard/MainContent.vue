@@ -20,8 +20,8 @@
       <v-list density="compact" nav>
         <v-list-item
           prepend-icon="mdi-ticket"
-          title="Pedidos"
-          value="Pedidos"
+          title="Reservas"
+          value="Reservas"
           active-class="text-blue"
           active
           to="/dashboard"
@@ -37,7 +37,7 @@
     </v-navigation-drawer>
     <v-main>
       <v-toolbar color="#f9f9f9">
-        <v-toolbar-title class="text-blue">Pedidos</v-toolbar-title>
+        <v-toolbar-title class="text-blue">Reservas</v-toolbar-title>
         <v-app-bar-nav-icon
           class="d-md-none d-sm-none"
           color="blue"

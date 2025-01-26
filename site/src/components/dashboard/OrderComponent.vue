@@ -17,7 +17,7 @@
           class="text-none"
           color="#009efb"
           @click="showModal(true)"
-          >Novo pedido</v-btn
+          >Nova reserva</v-btn
         >
       </v-col>
     </v-row>
@@ -96,7 +96,7 @@
         class="pl-15 pr-15 pt-15 pb-15 text-center"
       >
         <p>
-          Que pena, vocë não tem nenhum pedido, que tal fazer um novo pedido?
+          Que pena, vocë não tem nenhum pedido, que tal fazer um nova reserva?
         </p>
         <p class="pt-5">
           <v-btn
@@ -105,7 +105,7 @@
             class="text-none"
             color="#009efb"
             @click="showModal(true)"
-            >Fazer novo pedido</v-btn
+            >Fazer nova reserva</v-btn
           >
         </p>
       </v-col>

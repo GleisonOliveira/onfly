@@ -25,3 +25,9 @@ export type OrderFilters = {
   departure_date?: string;
   arrive_date?: string;
 };
+
+export type CreateOrder = {
+  arrive_date: string;
+  departure_date: string;
+  destination_id: string;
+};

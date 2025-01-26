@@ -1,7 +1,7 @@
 import { AxiosInstance } from "axios";
 import { getAxiosError, version } from "./api";
 import { AxiosRequestResponse, ErrorResponse } from "@/types/api";
-import { OrderFilters, OrderResponse } from "@/types/order";
+import { CreateOrder, OrderFilters, OrderResponse } from "@/types/order";
 
 const getOrders =
   (api: AxiosInstance) =>
@@ -22,4 +22,21 @@ const getOrders =
     }
   };
 
-export { getOrders };
+const createOrder =
+  (api: AxiosInstance) =>
+  async (
+    createOrderParams: CreateOrder
+  ): AxiosRequestResponse<OrderResponse, ErrorResponse> => {
+    try {
+      const { data } = await api.post<OrderResponse>(
+        `${version}/order`,
+        createOrderParams
+      );
+
+      return [data, undefined, undefined];
+    } catch (error) {
+      return getAxiosError(error);
+    }
+  };
+
+export { getOrders, createOrder };
