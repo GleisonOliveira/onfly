@@ -1,6 +1,6 @@
 import { api } from "@/services/api/api";
 import { createOrder, getOrders } from "@/services/api/order";
-import { Order } from "@/types/order";
+import { Order, OrderFilters } from "@/types/order";
 import { Meta } from "@/types/paginating";
 import { GetterTree, MutationTree, ActionTree } from "vuex";
 import { addDays, format, set } from "date-fns";
@@ -21,6 +21,7 @@ export interface OrderModuleType {
   filters: {
     page: number;
   };
+  orderFilters: OrderFilters;
 }
 
 const mutations = <MutationTree<OrderModuleType>>{
@@ -61,6 +62,15 @@ const mutations = <MutationTree<OrderModuleType>>{
     state.filters.page = page;
   },
 
+  setFilters(state, filters: OrderFilters) {
+    const newFilters = { ...state, ...filters };
+
+    state.orderFilters.departure_date = newFilters.departure_date ?? undefined;
+    state.orderFilters.name = newFilters.name ?? undefined;
+    state.orderFilters.status = newFilters.status ?? undefined;
+    state.orderFilters.departure_date = newFilters.departure_date ?? undefined;
+  },
+
   clearError(state) {
     state.error = false;
     state.errorMessage = undefined;
@@ -74,6 +84,10 @@ const actions = <ActionTree<OrderModuleType, unknown>>{
 
   setArriveDate({ commit }, date: Date) {
     commit("setArriveDate", date);
+  },
+
+  setFilters({ commit }, filters: OrderFilters) {
+    commit("setFilters", filters);
   },
 
   setDepartureDate(
@@ -186,6 +200,7 @@ export const OrderModule = {
       today: new Date(),
       destination_id: null,
     },
+    orderFilters: {},
     showModal: false,
     error: undefined,
     loading: true,

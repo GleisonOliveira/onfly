@@ -160,6 +160,10 @@ class OrderService
             }
         });
 
+        if (!empty($data['name'])) {
+            $query->where('order.destination.name', 'like', $data['name']);
+        }
+
         return $query;
     }
 }

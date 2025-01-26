@@ -21,6 +21,7 @@ export type OrderResponse = {
 export type OrderFilters = {
   page: number;
   id?: string;
+  name?: string;
   status?: Pick<Order, "status">;
   departure_date?: string;
   arrive_date?: string;

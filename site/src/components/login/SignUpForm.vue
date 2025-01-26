@@ -100,7 +100,6 @@ import * as yup from "yup";
 import { Form, Field } from "vee-validate";
 import { RootState } from "@/store";
 import { defineComponent } from "vue";
-import { SignUp } from "@/types/login";
 
 export default defineComponent({
   components: {

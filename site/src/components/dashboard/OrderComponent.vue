@@ -21,6 +21,8 @@
         >
       </v-col>
     </v-row>
+    <OrderFilter :disabled="loading" />
+    <v-divider />
     <LoadingComponent v-if="loading" />
     <ErrorComponent v-if="!loading && error" :tryAgain="getOrders" />
     <v-row>
@@ -35,6 +37,7 @@
               <th class="text-left">Finalizado</th>
               <th class="text-left">Ida</th>
               <th class="text-left">Volta</th>
+              <th class="text-left">ID</th>
             </tr>
           </thead>
           <tbody>
@@ -78,6 +81,7 @@
               </td>
               <td>{{ order.departure_date }}</td>
               <td>{{ order.arrive_date }}</td>
+              <td>{{ order.id }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -121,12 +125,14 @@ import { RootState } from "@/store";
 import { defineComponent } from "vue";
 import { mapState, mapActions } from "vuex";
 import NewOrderModal from "./NewOrderModal.vue";
+import OrderFilter from "../filter/OrderFilter.vue";
 
 export default defineComponent({
   components: {
     LoadingComponent,
     ErrorComponent,
     NewOrderModal,
+    OrderFilter,
   },
   watch: {
     filters: {
