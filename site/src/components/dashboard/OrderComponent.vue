@@ -4,7 +4,7 @@
       <v-col cols="12" class="text-right">
         <v-btn
           prepend-icon="mdi-refresh"
-          :disabled="loading || error"
+          :disabled="loading"
           class="text-none mr-2"
           color="#009efb"
           variant="text"
@@ -22,7 +22,7 @@
       </v-col>
     </v-row>
     <LoadingComponent v-if="loading" />
-    <ErrorComponent v-if="!loading && error" :tryAgain="tryAgain" />
+    <ErrorComponent v-if="!loading && error" :tryAgain="getOrders" />
     <v-row>
       <v-col cols="12">
         <v-table v-if="!loading && !error">
@@ -82,7 +82,7 @@
           </tbody>
         </v-table>
       </v-col>
-      <v-col v-if="orders.length > 0"
+      <v-col v-if="orders.length > 0 && !loading && !error"
         ><v-pagination
           :length="meta.last_page ?? 1"
           total-visible="5"
@@ -92,7 +92,7 @@
       </v-col>
       <v-col
         cols="12"
-        v-if="orders.length === 0"
+        v-if="orders.length === 0 && !loading && !error"
         class="pl-15 pr-15 pt-15 pb-15 text-center"
       >
         <p>

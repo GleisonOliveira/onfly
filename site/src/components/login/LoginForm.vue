@@ -7,13 +7,12 @@
             <img src="../../assets/logo.png" alt="" />
           </v-col>
           <v-col cols="12" class="pt-10 pb-15 pl-15 pr-15">
-            <Form @submit="onSubmit" :validation-schema="schema">
+            <Form @submit="login" :validation-schema="schema">
               <div>
                 <Field name="email" v-slot="{ field, errors }">
                   <label for="email">Qual o seu e-mail?</label>
                   <v-text-field
                     id="email"
-                    name="email"
                     v-bind="field"
                     autofocus
                     required
@@ -85,15 +84,8 @@ import * as yup from "yup";
 import { Form, Field } from "vee-validate";
 import { RootState } from "@/store";
 import { defineComponent } from "vue";
-import { Login } from "@/types/login";
 
-interface LoginFormData {
-  isSubmitting: boolean;
-  login: (e: Login) => void;
-  changeType: (e: string) => void;
-  showPassword: boolean;
-}
-export default defineComponent<LoginFormData>({
+export default defineComponent({
   components: {
     Form,
     Field,
@@ -108,25 +100,22 @@ export default defineComponent<LoginFormData>({
       changeType: "login/changeType",
       login: "login/login",
     }),
-    onSubmit(values: Login) {
-      this.login(values);
-    },
   },
   computed: {
-    ...mapState<LoginFormData>({
-      isSubmitting: (state: RootState) => state.login.isSubmitting,
+    ...mapState({
+      isSubmitting: (state: unknown) => (state as RootState).login.isSubmitting,
     }),
     schema() {
       return yup.object({
         email: yup
           .string()
-          .required("O e-mail é obrigatório")
-          .email("E-mail inválido"),
+          .required("O e-mail é obrigatório.")
+          .email("E-mail inválido."),
         password: yup
           .string()
-          .required("A senha é obrigatória")
-          .min(8, "A senha deve ter pelo menos 8 caracteres")
-          .max(16, "A senha deve ter no máximo 16 caracteres"),
+          .required("A senha é obrigatória.")
+          .min(8, "A senha deve ter pelo menos 8 caracteres.")
+          .max(16, "A senha deve ter no máximo 16 caracteres."),
       });
     },
   },

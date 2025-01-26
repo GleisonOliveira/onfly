@@ -3,6 +3,7 @@ import { getOrders } from "@/services/api/order";
 import { Order } from "@/types/order";
 import { Meta } from "@/types/paginating";
 import { GetterTree, MutationTree, ActionTree } from "vuex";
+import { addDays } from "date-fns";
 
 export interface OrderModuleType {
   order: {
@@ -25,6 +26,14 @@ export interface OrderModuleType {
 const mutations = <MutationTree<OrderModuleType>>{
   setLoading(state, loading: boolean) {
     state.loading = loading;
+  },
+
+  setArriveDate(state, date: Date) {
+    state.order.arrive_date = date;
+  },
+
+  setDepartureDate(state, date: Date) {
+    state.order.departure_date = date;
   },
 
   showModal(state, visible: boolean) {
@@ -57,6 +66,14 @@ const mutations = <MutationTree<OrderModuleType>>{
 const actions = <ActionTree<OrderModuleType, unknown>>{
   setPage({ commit }, page: number) {
     commit("setPage", page);
+  },
+
+  setArriveDate({ commit }, date: Date) {
+    commit("setArriveDate", date);
+  },
+
+  setDepartureDate({ commit }, date: Date) {
+    commit("setDepartureDate", date);
   },
 
   showModal({ commit, dispatch }, visible: boolean) {
@@ -100,7 +117,7 @@ export const OrderModule = {
   state: () => ({
     order: {
       departure_date: new Date(),
-      arrive_date: new Date(),
+      arrive_date: addDays(new Date(), 1),
       today: new Date(),
       destination_id: null,
     },

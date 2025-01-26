@@ -7,13 +7,12 @@
             <img src="../../assets/logo.png" alt="" />
           </v-col>
           <v-col cols="12" class="pt-10 pb-15 pl-15 pr-15">
-            <Form @submit="onSubmit" :validation-schema="schema">
+            <Form @submit="signUp" :validation-schema="schema">
               <div>
                 <Field name="name" v-slot="{ field, errors }">
                   <label for="name">Qual o seu nome?</label>
                   <v-text-field
                     id="name"
-                    name="name"
                     v-bind="field"
                     autofocus
                     required
@@ -30,7 +29,6 @@
                   <label for="email">Qual o seu e-mail?</label>
                   <v-text-field
                     id="email"
-                    name="email"
                     v-bind="field"
                     autofocus
                     required
@@ -104,12 +102,7 @@ import { RootState } from "@/store";
 import { defineComponent } from "vue";
 import { SignUp } from "@/types/login";
 
-interface LoginFormData {
-  isSubmitting: boolean;
-  signUp: (e: SignUp) => void;
-}
-
-export default defineComponent<LoginFormData>({
+export default defineComponent({
   components: {
     Form,
     Field,
@@ -121,31 +114,28 @@ export default defineComponent<LoginFormData>({
   },
   methods: {
     ...mapActions({ changeType: "login/changeType", signUp: "login/signup" }),
-    onSubmit(values: SignUp) {
-      this.signUp(values);
-    },
   },
   computed: {
-    ...mapState<LoginFormData>({
-      isSubmitting: (state: RootState) => state.login.isSubmitting,
+    ...mapState({
+      isSubmitting: (state: unknown) => (state as RootState).login.isSubmitting,
     }),
     schema() {
       return yup.object({
         name: yup
           .string()
-          .required("O nome é obrigatório")
-          .min(3, "O nome deve ter no mínimo 3 caracteres")
-          .max(255, "O nome deve ter no máximo 255 caracteres"),
+          .required("O nome é obrigatório.")
+          .min(3, "O nome deve ter no mínimo 3 caracteres.")
+          .max(255, "O nome deve ter no máximo 255 caracteres."),
         email: yup
           .string()
-          .required("O e-mail é obrigatório")
-          .email("E-mail inválido")
-          .max(255, "O e-mail deve ter no máximo 16 caracteres"),
+          .required("O e-mail é obrigatório.")
+          .email("E-mail inválido.")
+          .max(255, "O e-mail deve ter no máximo 16 caracteres."),
         password: yup
           .string()
-          .required("A senha é obrigatória")
-          .min(8, "A senha deve ter pelo menos 8 caracteres")
-          .max(16, "A senha deve ter no máximo 16 caracteres"),
+          .required("A senha é obrigatória.")
+          .min(8, "A senha deve ter pelo menos 8 caracteres.")
+          .max(16, "A senha deve ter no máximo 16 caracteres."),
       });
     },
   },
