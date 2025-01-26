@@ -7,14 +7,23 @@
   </template>
   <LoginModal />
 </template>
-<script>
+<script lang="ts">
 import { mapState } from "vuex";
 import LoginForm from "@/components/login/LoginForm.vue";
 import SignUpForm from "@/components/login/SignUpForm.vue";
 import LoginModal from "@/components/login/LoginModal.vue";
 import router from "@/router";
+import { RootState } from "@/store";
+import { LoginType } from "@/types/login";
+import { ErrorMessage } from "@/store/login";
+import { defineComponent } from "vue";
 
-export default {
+interface LoginViewData {
+  type: LoginType;
+  error: ErrorMessage;
+}
+
+export default defineComponent<LoginViewData>({
   components: {
     LoginForm,
     SignUpForm,
@@ -31,11 +40,11 @@ export default {
       return;
     }
   },
-  computed: mapState({
-    type: ({ login: { type } }) => type,
-    error: ({ login: { error } }) => error,
+  computed: mapState<LoginViewData>({
+    type: ({ login: { type } }: RootState) => type,
+    error: ({ login: { error } }: RootState) => error,
   }),
-};
+});
 </script>
 
 <style lang="scss">

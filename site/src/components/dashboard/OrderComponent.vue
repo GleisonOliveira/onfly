@@ -16,6 +16,7 @@
           :disabled="loading || error"
           class="text-none"
           color="#009efb"
+          @click="showModal(true)"
           >Novo pedido</v-btn
         >
       </v-col>
@@ -103,24 +104,29 @@
             :disabled="loading || error"
             class="text-none"
             color="#009efb"
+            @click="showModal(true)"
             >Fazer novo pedido</v-btn
           >
         </p>
       </v-col>
     </v-row>
   </v-container>
+  <NewOrderModal />
 </template>
 
 <script lang="ts">
 import LoadingComponent from "@/components/dialogs/LoadingComponent.vue";
 import ErrorComponent from "@/components/errors/ErrorComponent.vue";
+import { RootState } from "@/store";
 import { defineComponent } from "vue";
 import { mapState, mapActions } from "vuex";
+import NewOrderModal from "./NewOrderModal.vue";
 
 export default defineComponent({
   components: {
     LoadingComponent,
     ErrorComponent,
+    NewOrderModal,
   },
   watch: {
     filters: {
@@ -132,11 +138,11 @@ export default defineComponent({
   },
   computed: {
     ...mapState({
-      loading: ({ order: { loading } }) => loading,
-      error: ({ order: { error } }) => error,
-      orders: ({ order: { orders } }) => orders,
-      meta: ({ order: { meta } }) => meta,
-      filters: ({ order: { filters } }) => filters,
+      loading: (state: unknown) => (state as RootState).order.loading,
+      error: (state: unknown) => (state as RootState).order.error,
+      orders: (state: unknown) => (state as RootState).order.orders,
+      meta: (state: unknown) => (state as RootState).order.meta,
+      filters: (state: unknown) => (state as RootState).order.filters,
     }),
   },
   created() {
@@ -145,6 +151,7 @@ export default defineComponent({
   methods: {
     ...mapActions({
       getOrders: "order/getOrders",
+      showModal: "order/showModal",
     }),
     tryAgain() {
       console.log(1);

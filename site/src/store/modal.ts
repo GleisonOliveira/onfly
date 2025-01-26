@@ -1,9 +1,5 @@
+import { Modal } from "@/types/modal";
 import { GetterTree, MutationTree, ActionTree } from "vuex";
-
-type Modal = {
-  width?: string | number;
-  showModal?: boolean;
-};
 export interface ModalModuleType {
   modal: Modal;
 }

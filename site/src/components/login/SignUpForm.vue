@@ -96,12 +96,20 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import { mapActions, mapState } from "vuex";
 import * as yup from "yup";
 import { Form, Field } from "vee-validate";
+import { RootState } from "@/store";
+import { defineComponent } from "vue";
+import { SignUp } from "@/types/login";
 
-export default {
+interface LoginFormData {
+  isSubmitting: boolean;
+  signUp: (e: SignUp) => void;
+}
+
+export default defineComponent<LoginFormData>({
   components: {
     Form,
     Field,
@@ -113,13 +121,13 @@ export default {
   },
   methods: {
     ...mapActions({ changeType: "login/changeType", signUp: "login/signup" }),
-    onSubmit(values) {
+    onSubmit(values: SignUp) {
       this.signUp(values);
     },
   },
   computed: {
-    ...mapState({
-      isSubmitting: (state) => state.login.isSubmitting,
+    ...mapState<LoginFormData>({
+      isSubmitting: (state: RootState) => state.login.isSubmitting,
     }),
     schema() {
       return yup.object({
@@ -141,7 +149,7 @@ export default {
       });
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

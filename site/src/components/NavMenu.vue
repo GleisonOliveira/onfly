@@ -18,13 +18,14 @@
 </template>
 
 <script lang="ts">
+import { RootState } from "@/store";
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
 export default defineComponent({
   computed: {
     ...mapState({
-      user: ({ user: { user } }) => user,
+      user: (state: unknown) => (state as RootState).user?.user,
     }),
     url() {
       if (!this.user || !localStorage.getItem(process.env.VUE_APP_JWT_NAME)) {

@@ -30,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: "Onfly - Minha conta",
     },
-    children: [{ path: "", component: OrderComponent }],
+    children: [{ path: "", component: OrderComponent, name: "order" }],
   },
 ];
 

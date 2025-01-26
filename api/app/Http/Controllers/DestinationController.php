@@ -15,12 +15,10 @@ class DestinationController extends Controller
      * 
      * @response Illuminate\Http\Resources\Json\AnonymousResourceCollection<Illuminate\Pagination\LengthAwarePaginator<DestinationResource>>
      */
-    public function index(Request $request)
+    public function index()
     {
-        $page = $request->only('page')['page'] ?? 1;
-        
         return DestinationResource::collection(
-            $this->destinationService->list($page)
+            $this->destinationService->list()
         );
     }
 }

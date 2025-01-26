@@ -10,15 +10,21 @@
   </v-snackbar>
 </template>
 
-<script>
+<script lang="ts">
+import { RootState } from "@/store";
+import { Toast } from "@/types/toast";
+import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
-export default {
+interface ToastMessageData {
+  toast: Toast;
+}
+export default defineComponent<ToastMessageData>({
   name: "ToastMessage",
   computed: {
-    ...mapState({
-      toast: ({ toast: { toast } }) => toast,
+    ...mapState<ToastMessageData>({
+      toast: ({ toast: { toast } }: RootState) => toast,
     }),
   },
-};
+});
 </script>

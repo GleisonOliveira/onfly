@@ -19,10 +19,10 @@ class DestinationService
      * @return LengthAwarePaginator
      * @throws InternalErrorException
      */
-    public function list(int $page = 1): LengthAwarePaginator | Collection
+    public function list(): LengthAwarePaginator | Collection
     {
         try {
-            return Cache::remember("destinations_{$page}", self::DEFAULT_CACHE_TTL, function () {
+            return Cache::remember("destinations", self::DEFAULT_CACHE_TTL, function () {
                 return Destination::all();
             });
         } catch (Throwable) {

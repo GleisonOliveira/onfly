@@ -23,11 +23,17 @@
   </DialogModal>
 </template>
 
-<script>
+<script lang="ts">
 import { mapActions, mapState } from "vuex";
 import DialogModal from "@/components//dialogs/DialogModal.vue";
+import { RootState } from "@/store";
+import { ErrorMessage } from "@/store/login";
+import { defineComponent } from "vue";
 
-export default {
+interface LoginModalData {
+  error: ErrorMessage;
+}
+export default defineComponent<LoginModalData>({
   components: {
     DialogModal,
   },
@@ -41,8 +47,8 @@ export default {
       hideModal: "modal/hideModal",
     }),
   },
-  computed: mapState({
-    error: ({ login: { error } }) => error,
+  computed: mapState<LoginModalData>({
+    error: ({ login: { error } }: RootState) => error,
   }),
-};
+});
 </script>

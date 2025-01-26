@@ -3,7 +3,7 @@ import { api, login, signUp } from "@/services/api/api";
 import router from "@/router";
 import { Login, LoginType, SignUp } from "@/types/login";
 
-type ErrorMessage = {
+export type ErrorMessage = {
   title: string;
   message: string;
 };

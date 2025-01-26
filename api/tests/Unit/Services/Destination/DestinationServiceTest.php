@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Destination;
 use App\Services\Destination\DestinationService;
 use Illuminate\Support\Facades\Cache;
 use LaracraftTech\LaravelUsefulAdditions\Traits\RefreshDatabaseFast;
@@ -22,7 +21,7 @@ describe('Destination', function () {
 
         expect($destinations[0])->not->toBeNull();
 
-        $cache = Cache::get('destinations_1');
+        $cache = Cache::get('destinations');
 
         expect($cache)->not->toBeNull();
     });

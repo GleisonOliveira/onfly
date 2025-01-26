@@ -1,13 +1,20 @@
 import { AxiosInstance } from "axios";
 import { getAxiosError, version } from "./api";
 import { AxiosRequestResponse, ErrorResponse } from "@/types/api";
-import { OrderResponse } from "@/types/order";
+import { OrderFilters, OrderResponse } from "@/types/order";
 
 const getOrders =
   (api: AxiosInstance) =>
-  async (): AxiosRequestResponse<OrderResponse, ErrorResponse> => {
+  async (
+    orderFiltes: OrderFilters
+  ): AxiosRequestResponse<OrderResponse, ErrorResponse> => {
     try {
-      const { data } = await api.get<OrderResponse>(`${version}/order`);
+      const params = new URLSearchParams(
+        orderFiltes as unknown as Record<string, string>
+      );
+      const { data } = await api.get<OrderResponse>(
+        `${version}/order?${params.toString()}`
+      );
 
       return [data, undefined, undefined];
     } catch (error) {

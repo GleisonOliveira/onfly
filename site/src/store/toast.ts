@@ -1,12 +1,6 @@
+import { Toast } from "@/types/toast";
 import { GetterTree, MutationTree, ActionTree } from "vuex";
 
-type Toast = {
-  message?: string;
-  color?: string;
-  timer?: number;
-  icon?: string;
-  showSnackbar?: boolean;
-};
 export interface ToastModuleType {
   toast: Toast;
 }
