@@ -4,10 +4,10 @@ Esse repositório faz parte do teste para desenvolvedor full stack senior na emp
 ## Como rodar o projeto
 1. Clone o projeto na sua maquina (e garanta que o docker esteja devidamente instalado e funcionando [https://docs.docker.com/get-started/get-docker/](https://docs.docker.com/get-started/get-docker/))
 2. Abra a pasta `api` e crie uma cópia do arquivo `.env.example` e altere seu nome para `.env`
-3. Acesse o site [https://mailtrap.io/](https://mailtrap.io/), acesse ou crie uma conta para o enbvio de e-mails de teste
+3. Acesse o site [https://mailtrap.io/](https://mailtrap.io/), acesse ou crie uma conta para o envio de e-mails de teste
 4. Na tela principal do mailtrap, desça até encontrar PHP, clique e escolha **Laravel 9+**, copie as credenciais e cole as no arquivo `.env` (nas variáveis **MAIL_HOST**, **MAIL_PORT**, **MAIL_USERNAME**, **MAIL_PASSWORD**)
 5. Na pasta raiz do proejto, abra a pasta `site` e crie uma cópia do arquivo `.env.example` e altere seu nome para `.env`
-6. Na raiz do projeto, abra um terminal e utilize o seguinte comando `docker compose -f docker-compose-deps.yml up -d` (irá iniciar os containers necessários para a instaação de dependencias), aguarde ate que os containers `onfly-composer-1` e `onfly-node-1` sejam encerrados
+6. Na raiz do projeto, abra um terminal e utilize o seguinte comando `docker compose -f docker-compose-deps.yml up -d` (irá iniciar os containers necessários para a instalação de dependencias), aguarde ate que os containers `onfly-composer-1` e `onfly-node-1` sejam encerrados (esse processo pode levar algum tempo).
 7. Aguarde até que as dependencias tenham sido instaladas (aguarde até que os containers `onfly-composer-1` e `onfly-node-1` sejam encerrados,
 8. Na raiz do projeto, utilize o seguinte comando `docker compose up -d` esse processo pode demorar e irá iniciar os containers das aplicações
 
@@ -18,7 +18,7 @@ Esse repositório faz parte do teste para desenvolvedor full stack senior na emp
 Caso o sistema operacional da maquina seja Windows com WSL2, o recomendado (recomendação oficial Microsoft) é que o projeto seja clonado e rodado dentro do WSL2, isso se deve ao fato da forma com que o docker funciona.
 Rodar o projeto diretamente no ambiente windows, causará duas situações:
 
-1. Desempenho reduzido - Ao rodar um projeto Docker diretamente no Windows, fará com que o sistema operacional tenha, sincronizar a escrita  e leitura dos dados para o container, isso significa que quando o container precisa acessar o arquivo, de fato, ele não estará lá, mas sim será um volume montado no qual a cada arquivo lido, o sistema tenha que solicitar ao windows uma sincronização do arquivo, isso fará com que a performance da aplicação se degrade em mais de 10x ((clique aqui para saber mais)[https://learn.microsoft.com/pt-br/windows/wsl/setup/environment])
+1. Desempenho reduzido - Ao rodar um projeto Docker diretamente no Windows, fará com que o sistema operacional tenha que sincronizar a escrita  e leitura dos dados para o container, isso significa que quando o container precisa acessar o arquivo, de fato, ele não estará lá, mas sim será um volume montado no qual a cada arquivo lido, o sistema tenha que solicitar ao windows uma sincronização do arquivo, isso fará com que a performance da aplicação se degrade em mais de 10x ((clique aqui para saber mais)[https://learn.microsoft.com/pt-br/windows/wsl/setup/environment])
 
 2. Hot reload não funcionará - Outra restrição do WSL2, é que ao salvar um arquivo no Windows, o arquivo e os dados em si serão sincronizados, entretanto as notificações de modificações de arquivo, não são repassadas ao sistema linux e ao container, na pratica, aplicações em node, utilizam essas notificações para saber se um arquivo foi ou não modificado, como essas notificações nunca chegarão, o node nunca atualizará e fará o Hot reload.
 
