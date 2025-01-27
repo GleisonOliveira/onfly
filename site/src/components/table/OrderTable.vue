@@ -12,6 +12,7 @@
             <th class="text-left">Ida</th>
             <th class="text-left">Volta</th>
             <th class="text-left">ID</th>
+            <th class="text-left" colspan="3">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -56,6 +57,35 @@
             <td>{{ order.departure_date }}</td>
             <td>{{ order.arrive_date }}</td>
             <td>{{ order.id }}</td>
+            <template v-if="type === 'Admin'">
+              <td class="pl-2 pr-2">
+                <v-btn
+                  prepend-icon="mdi-close-circle-outline"
+                  class="text-none"
+                  color="red"
+                  type="submit"
+                  >Cancelar</v-btn
+                >
+              </td>
+              <td class="pl-2 pr-2">
+                <v-btn
+                  prepend-icon="mdi-plane-car"
+                  class="text-none"
+                  color="green"
+                  type="submit"
+                  >Aceitar</v-btn
+                >
+              </td>
+              <td class="pl-2 pr-2">
+                <v-btn
+                  prepend-icon="mdi-content-save-check"
+                  class="text-none"
+                  color="blue"
+                  type="submit"
+                  >Finalizar</v-btn
+                >
+              </td>
+            </template>
           </tr>
         </tbody>
       </v-table>

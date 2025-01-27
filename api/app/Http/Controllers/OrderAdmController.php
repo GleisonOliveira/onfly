@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Requests\UserOrderFilters;
 use App\Http\Requests\UserOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Models\Order;
 use App\Services\Order\OrderService;
 use Illuminate\Http\Request;
 use Nette\NotImplementedException;
@@ -44,7 +46,7 @@ class OrderAdmController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(OrderUpdateRequest $orderUpdateRequest, Order $order)
     {
         throw new NotImplementedException('Not implemented');
     }
