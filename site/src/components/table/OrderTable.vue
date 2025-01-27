@@ -64,6 +64,11 @@
                   class="text-none"
                   color="red"
                   type="submit"
+                  :disabled="
+                    order.status === 'canceled' ||
+                    order.finished ||
+                    (order.loading ?? false)
+                  "
                   >Cancelar</v-btn
                 >
               </td>
@@ -73,6 +78,11 @@
                   class="text-none"
                   color="green"
                   type="submit"
+                  :disabled="
+                    order.status === 'approved' ||
+                    order.finished ||
+                    (order.loading ?? false)
+                  "
                   >Aceitar</v-btn
                 >
               </td>
@@ -82,6 +92,7 @@
                   class="text-none"
                   color="blue"
                   type="submit"
+                  :disabled="order.finished || (order.loading ?? false)"
                   >Finalizar</v-btn
                 >
               </td>

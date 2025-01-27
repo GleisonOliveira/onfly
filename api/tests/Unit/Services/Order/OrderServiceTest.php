@@ -1,12 +1,17 @@
 <?php
 
+use App\Events\OrderUpdatedEvent;
+use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Requests\UserOrderFilters;
 use App\Http\Requests\UserOrderRequest;
 use App\Models\Destination;
+use App\Models\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Order\OrderService;
+use Illuminate\Support\Facades\Event;
 use LaracraftTech\LaravelUsefulAdditions\Traits\RefreshDatabaseFast;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use function Pest\Laravel\assertDatabaseHas;
@@ -27,6 +32,7 @@ beforeEach(function () {
         'arrive_date' => $this->arriveDate,
     ]);
     $this->orderService = new OrderService();
+    $this->orderUpdateRequest = $this->mock(OrderUpdateRequest::class);
     $this->userOrderRequest = $this->mock(UserOrderRequest::class);
     $this->userOrderFilters = $this->mock(UserOrderFilters::class);
     $this->orderData = [
@@ -34,6 +40,7 @@ beforeEach(function () {
         'arrive_date' => $this->arriveDate,
         'destination_id' => $this->destination->id
     ];
+    $this->createOrder = ['destination_id' => $this->destination->id, 'user_id' => $this->user->id, 'status' => 'approved'];
 });
 
 describe('Order', function () {
@@ -138,5 +145,39 @@ describe('Order admin', function () {
         $orders = $this->orderService->listAdmUserOrders($this->userOrderFilters);
 
         expect($orders[0]->id)->toBe($this->order->id);
+    });
+
+    test('Should throw exception when order is already finished', function () {
+        $order = Order::factory()->create(['finished' => true, ...$this->createOrder]);
+
+        $this->orderService->update($order, $this->orderUpdateRequest);
+    })->throws(BadRequestHttpException::class);
+
+    test('Should update the finish of order and ignore status and dispatch email event', function () {
+        Event::fake();
+        $order = Order::factory()->create(['finished' => false, ...$this->createOrder]);
+
+        $this->orderUpdateRequest->expects('validated')->andReturn(['finished' => true, 'status' => 'canceled']);
+
+        $updatedOrder = $this->orderService->update($order, $this->orderUpdateRequest);
+
+        expect($updatedOrder->finished)->toBe(true);
+        expect($updatedOrder->status)->toBe(OrderStatus::Approved);
+
+        Event::assertDispatched(OrderUpdatedEvent::class);
+    });
+    
+    test('Should update the order status and dispatch email event', function () {
+        Event::fake();
+        $order = Order::factory()->create(['finished' => false, ...$this->createOrder]);
+
+        $this->orderUpdateRequest->expects('validated')->andReturn(['finished' => false, 'status' => 'canceled']);
+
+        $updatedOrder = $this->orderService->update($order, $this->orderUpdateRequest);
+
+        expect($updatedOrder->finished)->toBe(false);
+        expect($updatedOrder->status)->toBe(OrderStatus::Canceled);
+
+        Event::assertDispatched(OrderUpdatedEvent::class);
     });
 });

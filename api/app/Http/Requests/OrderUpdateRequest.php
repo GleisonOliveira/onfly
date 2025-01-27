@@ -22,18 +22,18 @@ class OrderUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'finish' => 'boolean|required',
-            'status' => [Rule::in(['approved', 'canceled']), 'accepted_if:finish,false'],
+            'finished' => 'boolean|required',
+            'status' => [Rule::in(['approved', 'canceled']), 'required_if:finished,false'],
         ];
     }
 
     public function messages()
     {
         return [
-            'finish.boolean' => 'O valor finish deve ser um booleano',
-            'finish.required' => 'O valor finish é obrigatório',
+            'finished.boolean' => 'O valor finished deve ser um booleano',
+            'finished.required' => 'O valor finished é obrigatório',
             'status.in' => 'O statues é inválido',
-            'status.accepted_if' => 'O campo status é obrigatório quando o campo finish é falso',
+            'status.required_if' => 'O campo status é obrigatório quando o campo finished é falso',
         ];
     }
 }

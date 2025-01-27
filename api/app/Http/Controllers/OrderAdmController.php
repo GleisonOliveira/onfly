@@ -6,9 +6,11 @@ use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Requests\UserOrderFilters;
 use App\Http\Requests\UserOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Mail\OrderUpdated;
 use App\Models\Order;
 use App\Services\Order\OrderService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Nette\NotImplementedException;
 
 class OrderAdmController extends Controller
@@ -48,7 +50,7 @@ class OrderAdmController extends Controller
      */
     public function update(OrderUpdateRequest $orderUpdateRequest, Order $order)
     {
-        throw new NotImplementedException('Not implemented');
+        return new OrderResource($this->orderService->update($order, $orderUpdateRequest));
     }
 
     /**

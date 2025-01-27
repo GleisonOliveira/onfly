@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Events\OrderUpdated;
+use App\Events\OrderUpdatedEvent;
 use App\Models\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,6 +49,6 @@ class Order extends Model
      * @var array<string, string>
      */
     protected $dispatchesEvents = [
-        'updated' => OrderUpdated::class,
+        'updated' => OrderUpdatedEvent::class,
     ];
 }

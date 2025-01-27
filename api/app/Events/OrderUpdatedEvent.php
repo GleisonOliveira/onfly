@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderUpdated
+class OrderUpdatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -16,9 +16,7 @@ class OrderUpdated
      * Create a new event instance.
      */
     public function __construct(public readonly Order $order)
-    {
-        //
-    }
+    {}
 
     /**
      * Get the channels the event should broadcast on.

@@ -10,6 +10,7 @@ export type Order = {
   finished: boolean;
   destination: Destination;
   user: User;
+  loading: boolean | null;
 };
 
 export type OrderResponse = {

@@ -3,6 +3,7 @@
 namespace App\Services\Order;
 
 use App\Exceptions\InvalidUUID;
+use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Requests\UserOrderFilters;
 use App\Http\Requests\UserOrderRequest;
 use App\Models\Enums\OrderStatus;
@@ -13,6 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Throwable;
 
 class OrderService
@@ -136,6 +138,35 @@ class OrderService
         } catch (Throwable) {
             throw new InternalErrorException('Não foi possível efetuar o cadastro');
         }
+    }
+
+    /**
+     * Update the given order
+     *
+     * @param  Order              $order
+     * @param  OrderUpdateRequest $orderUpdateRequest
+     *
+     * @return Order
+     */
+    public function update(Order $order, OrderUpdateRequest $orderUpdateRequest): Order
+    {
+        if ($order->finished) {
+            throw new BadRequestHttpException('Um pedido finalizado não pode ser alterado');
+        }
+
+        $data = $orderUpdateRequest->validated();
+
+        if (!empty($data['finished'])) {
+            $order->finished = $data['finished'];
+            $order->save();
+
+            return $order;
+        }
+
+        $order->status = $data['status'];
+        $order->save();
+
+        return $order;
     }
 
     /**

@@ -2,26 +2,20 @@
 
 namespace App\Listeners;
 
-use App\Events\OrderUpdated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Events\OrderUpdatedEvent;
+use App\Jobs\SendOrderUpdateEmailJob;
 
 class SendOrderEmailUpdate
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
-    public function handle(OrderUpdated $event): void
+    public function handle(OrderUpdatedEvent $event): void
     {
-        //
-        dd('enviar');
+        if ($event->order->finished) {
+            return;
+        }
+
+        SendOrderUpdateEmailJob::dispatch($event->order);
     }
 }
