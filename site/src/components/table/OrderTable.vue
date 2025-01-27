@@ -12,7 +12,7 @@
             <th class="text-left">Ida</th>
             <th class="text-left">Volta</th>
             <th class="text-left">ID</th>
-            <th class="text-left" colspan="3">Ações</th>
+            <th class="text-left" v-if="type === 'Admin'" colspan="3">Ações</th>
           </tr>
         </thead>
         <tbody>
