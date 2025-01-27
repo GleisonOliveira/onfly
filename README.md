@@ -12,6 +12,7 @@ Esse repositório faz parte do teste para desenvolvedor full stack senior na emp
 8. Na raiz do projeto, utilize o seguinte comando `docker compose up -d` esse processo pode demorar e irá iniciar os containers das aplicações
 
 > Obs.: Ambas as aplicações estão configuradas para funcionar no modo dev, isso significa que otimizações de velocidade não serão aplciadas, alem de que ferramentas instrumentadas para desenvolvimento, continuarão rodando, como o caso de debuggers, linters, opcache, e etc...
+> Caso ocorra algum problema no build, favor, rodar novamente (problemas de conectividade com a internet podem causar problemas no build) 
 
 ### Docker Windows + WSL
 Caso o sistema operacional da maquina seja Windows com WSL2, o recomendado (recomendação oficial Microsoft) é que o projeto seja clonado e rodado dentro do WSL2, isso se deve ao fato da forma com que o docker funciona.
