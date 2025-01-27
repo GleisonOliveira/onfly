@@ -23,8 +23,8 @@ class OrderService
 
     private const array ORDER_FILTERS = [
         'status' => '=',
-        'departure_date' => '>=',
-        'arrive_date' => '<=',
+        'departure_date' => '<=',
+        'arrive_date' => '>=',
         'destination_id' => '=',
     ];
 

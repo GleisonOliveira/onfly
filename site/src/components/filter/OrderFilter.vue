@@ -43,7 +43,7 @@
         </v-col>
         <v-col cols="12" md="3" lg="2" class="pl-4">
           <v-select
-            label="Data de partida"
+            label="Período"
             variant="outlined"
             density="compact"
             item-title="title"
@@ -146,19 +146,19 @@ export default defineComponent({
         value: "all",
       },
       {
-        title: "Últimos 7 dias",
+        title: "Próximos 7 dias",
         value: "7",
       },
       {
-        title: "Últimos 30 dias",
+        title: "Próximos 30 dias",
         value: "30",
       },
       {
-        title: "Últimos 90 dias",
+        title: "Próximos 90 dias",
         value: "90",
       },
       {
-        title: "Último ano",
+        title: "Próximo ano",
         value: "365",
       },
     ],

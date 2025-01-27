@@ -2,7 +2,7 @@ import { api } from "@/services/api/api";
 import { createOrder, getOrders, updateOrder } from "@/services/api/order";
 import { OrderFilters, OrderStatuses, OrderUpdate } from "@/types/order";
 import { ActionTree } from "vuex";
-import { addDays, format, set, subDays } from "date-fns";
+import { addDays, addYears, format, set } from "date-fns";
 import { OrderModuleType } from "../order";
 import { TZDate } from "@date-fns/tz";
 import { RootState } from "..";
@@ -62,6 +62,10 @@ export const actions = <ActionTree<OrderModuleType, unknown>>{
     commit("setPeriod", period);
 
     if (period === "all") {
+      commit("setFilters", {
+        departure_date: undefined,
+      });
+      return;
       return;
     }
 
@@ -69,26 +73,26 @@ export const actions = <ActionTree<OrderModuleType, unknown>>{
 
     if (period === "7") {
       commit("setFilters", {
-        departure_date: subDays(datePeriod, 7),
+        departure_date: addDays(datePeriod, 7),
       });
       return;
     }
 
     if (period === "30") {
       commit("setFilters", {
-        departure_date: subDays(datePeriod, 30),
+        departure_date: addDays(datePeriod, 30),
       });
       return;
     }
     if (period === "90") {
       commit("setFilters", {
-        departure_date: subDays(datePeriod, 90),
+        departure_date: addDays(datePeriod, 90),
       });
       return;
     }
 
     commit("setFilters", {
-      departure_date: subDays(datePeriod, 365),
+      departure_date: addYears(datePeriod, 1),
     });
   },
 
