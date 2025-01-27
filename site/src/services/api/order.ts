@@ -6,14 +6,16 @@ import { CreateOrder, OrderFilters, OrderResponse } from "@/types/order";
 const getOrders =
   (api: AxiosInstance) =>
   async (
-    orderFiltes: OrderFilters
+    orderFiltes: OrderFilters,
+    loginAdmin = false
   ): AxiosRequestResponse<OrderResponse, ErrorResponse> => {
     try {
+      const uri = loginAdmin ? `${version}/admin/order` : `${version}/order`;
       const params = new URLSearchParams(
         orderFiltes as unknown as Record<string, string>
       );
       const { data } = await api.get<OrderResponse>(
-        `${version}/order?${params.toString()}`
+        `${uri}?${params.toString()}`
       );
 
       return [data, undefined, undefined];

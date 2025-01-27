@@ -23,8 +23,8 @@ class UserOrderRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'departure_date' => 'required|date_format:Y-m-d H:i:s|after:now',
-            'arrive_date' => 'required|date_format:Y-m-d H:i:s|after:' . Carbon::parse($this->data('departure_date', new DateTime()))->addMinutes(30),
+            'departure_date' => 'required|date_format:Y-m-d H:i:s|after:' . Carbon::parse(new DateTime())->startOfDay(),
+            'arrive_date' => 'required|date_format:Y-m-d H:i:s|after:' . Carbon::parse($this->data('departure_date', new DateTime())),
             'destination_id' => 'required|exists:destinations,id',
         ];
     }

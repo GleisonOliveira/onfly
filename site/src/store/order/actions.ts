@@ -4,6 +4,8 @@ import { OrderFilters } from "@/types/order";
 import { ActionTree } from "vuex";
 import { addDays, format, set, subDays } from "date-fns";
 import { OrderModuleType } from "../order";
+import { TZDate } from "@date-fns/tz";
+import { RootState } from "..";
 
 const getOrderFilters = ({
   id,
@@ -26,10 +28,11 @@ const getOrderFilters = ({
   }
 
   if (departure_date) {
-    filters.departure_date = format(
+    const departureDate = new TZDate(
       set(departure_date, { hours: 0, minutes: 0, seconds: 0 }),
-      "yyyy-MM-dd HH:mm:ss"
+      "UTC"
     );
+    filters.departure_date = format(departureDate, "yyyy-MM-dd HH:mm:ss");
   }
 
   return filters;
@@ -116,7 +119,7 @@ export const actions = <ActionTree<OrderModuleType, unknown>>{
     dispatch("destinations/getDestinations", null, { root: true });
   },
 
-  async getOrders({ commit, state }, page = 1) {
+  async getOrders({ commit, state, rootState }, page = 1) {
     commit("setLoading", true);
     commit("clearError");
 
@@ -124,11 +127,15 @@ export const actions = <ActionTree<OrderModuleType, unknown>>{
       ...state.filters,
       ...getOrderFilters(state.orderFilters),
     };
+    const isLoginAdmin = (rootState as RootState).user.type === "Admin";
 
-    const [response, error] = await getOrders(api)({
-      ...filters,
-      page: page,
-    });
+    const [response, error] = await getOrders(api)(
+      {
+        ...filters,
+        page: page,
+      },
+      isLoginAdmin
+    );
 
     if (error || !response || !response.data) {
       commit(
@@ -155,15 +162,17 @@ export const actions = <ActionTree<OrderModuleType, unknown>>{
       order: { arrive_date, destination_id, dep_date },
     },
   }) {
+    const initialDate = new TZDate(
+      set(dep_date, { hours: 0, minutes: 0, seconds: 0 }),
+      "UTC"
+    );
+    const endDate = new TZDate(
+      set(arrive_date, { hours: 0, minutes: 0, seconds: 0 }),
+      "UTC"
+    );
     const [response, error] = await createOrder(api)({
-      departure_date: format(
-        set(dep_date, { hours: 0, minutes: 0, seconds: 0 }),
-        "yyyy-MM-dd HH:mm:ss"
-      ),
-      arrive_date: format(
-        set(arrive_date, { hours: 0, minutes: 0, seconds: 0 }),
-        "yyyy-MM-dd HH:mm:ss"
-      ),
+      departure_date: format(initialDate, "yyyy-MM-dd HH:mm:ss"),
+      arrive_date: format(endDate, "yyyy-MM-dd HH:mm:ss"),
       destination_id: destination_id,
     });
 

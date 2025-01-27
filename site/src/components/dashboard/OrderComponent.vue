@@ -12,6 +12,7 @@
           >Atualizar</v-btn
         >
         <v-btn
+          v-if="type !== 'Admin'"
           prepend-icon="mdi-plus"
           :disabled="loading || error"
           class="text-none"
@@ -24,7 +25,11 @@
     <OrderFilter :disabled="loading" />
     <v-divider />
     <LoadingComponent v-if="loading" />
-    <ErrorComponent v-if="!loading && error" :tryAgain="getOrders" />
+    <ErrorComponent
+      v-if="!loading && error"
+      :message="errorMessage"
+      :tryAgain="getOrders"
+    />
     <OrderTable />
   </v-container>
   <NewOrderModal />
@@ -52,9 +57,11 @@ export default defineComponent({
     ...mapState({
       loading: (state: unknown) => (state as RootState).order.loading,
       error: (state: unknown) => (state as RootState).order.error,
+      errorMessage: (state: unknown) => (state as RootState).order.errorMessage,
       orders: (state: unknown) => (state as RootState).order.orders,
       meta: (state: unknown) => (state as RootState).order.meta,
       filters: (state: unknown) => (state as RootState).order.filters,
+      type: (state: unknown) => (state as RootState).user.type,
     }),
     currentPage: {
       get(): number {

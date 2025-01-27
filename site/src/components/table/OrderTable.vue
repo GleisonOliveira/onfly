@@ -73,10 +73,14 @@
       v-if="orders.length === 0 && !loading && !error"
       class="pl-15 pr-15 pt-15 pb-15 text-center"
     >
-      <p>
-        Que pena, vocë não tem nenhum pedido, que tal fazer um nova reserva?
+      <p v-if="type !== 'Admin'">
+        Que pena, você não tem nenhum pedido, que tal fazer um nova reserva?
       </p>
-      <p class="pt-5">
+      <p v-if="type === 'Admin'">
+        Que pena, não encontramos nenhum pedido, tente novamente com outros
+        filtros.
+      </p>
+      <p class="pt-5" v-if="type !== 'Admin'">
         <v-btn
           prepend-icon="mdi-plus"
           :disabled="loading || error"
@@ -102,6 +106,7 @@ export default defineComponent({
       error: (state: unknown) => (state as RootState).order.error,
       orders: (state: unknown) => (state as RootState).order.orders,
       meta: (state: unknown) => (state as RootState).order.meta,
+      type: (state: unknown) => (state as RootState).user.type,
     }),
     currentPage: {
       get(): number {

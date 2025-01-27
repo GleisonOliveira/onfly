@@ -7,7 +7,12 @@
             <img src="../../assets/logo.png" alt="" />
           </v-col>
           <v-col cols="12" class="pt-10 pb-15 pl-15 pr-15">
-            <Form @submit="login" :validation-schema="schema">
+            <Form
+              @submit="
+                (values) => login({ loginData: values, loginAdmin: loginAdmin })
+              "
+              :validation-schema="schema"
+            >
               <div>
                 <Field name="email" v-slot="{ field, errors }">
                   <label for="email">Qual o seu e-mail?</label>
@@ -56,8 +61,8 @@
                   Entrar
                 </v-btn>
               </div>
-              <div class="mt-5 mb-5 text-center">Ou</div>
-              <div>
+              <div class="mt-5 mb-5 text-center" v-if="!loginAdmin">Ou</div>
+              <div v-if="!loginAdmin">
                 <v-btn
                   variant="tonal"
                   block
@@ -86,6 +91,11 @@ import { RootState } from "@/store";
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: {
+    loginAdmin: {
+      default: false,
+    },
+  },
   components: {
     Form,
     Field,

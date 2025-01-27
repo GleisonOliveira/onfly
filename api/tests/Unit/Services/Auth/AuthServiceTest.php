@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Requests\AdminLoginRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Resources\JWTResource;

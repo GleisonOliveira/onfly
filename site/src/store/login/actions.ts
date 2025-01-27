@@ -14,9 +14,12 @@ export const actions = <ActionTree<LoginModuleType, unknown>>{
     commit("setIsSubmitting", isSubmitting);
   },
 
-  async login({ commit, dispatch }, loginData: Login) {
+  async login(
+    { commit, dispatch },
+    { loginData, loginAdmin = false }: { loginData: Login; loginAdmin: boolean }
+  ) {
     commit("setIsSubmitting", true);
-    const [response, error] = await login(api)(loginData);
+    const [response, error] = await login(api)(loginData, loginAdmin);
 
     if (response) {
       const { data } = response;

@@ -6,6 +6,7 @@ import "nprogress/nprogress.css";
 import DashboardView from "@/views/DashboardView.vue";
 import store from "@/store";
 import OrderComponent from "@/components/dashboard/OrderComponent.vue";
+import LoginAdminView from "@/views/LoginAdminView.vue";
 
 NProgress.configure({ showSpinner: true });
 const reservedRoutes = ["/dashboard"];
@@ -21,6 +22,14 @@ const routes: Array<RouteRecordRaw> = [
     component: LoginView,
     meta: {
       title: "Onfly - Login",
+    },
+  },
+  {
+    path: "/login-admin",
+    name: "login-admin",
+    component: LoginAdminView,
+    meta: {
+      title: "Onfly - Login administrativo",
     },
   },
   {
@@ -57,6 +66,7 @@ router.beforeEach(async (to, from, next) => {
   if (
     !isAuthenticated() &&
     to.name !== "login" &&
+    to.name !== "login-admin" &&
     to.name !== "signup" &&
     reservedRoutes.includes(to.path as string)
   ) {

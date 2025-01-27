@@ -23,7 +23,7 @@ class UserOrderFilters extends BaseRequest
     public function rules(): array
     {
         return [
-            'id' => 'uuid',
+            'id' => 'string',
             'status' => [Rule::enum(OrderStatus::class)],
             'destination_id' => 'uuid',
             'departure_date' => 'date_format:Y-m-d H:i:s',

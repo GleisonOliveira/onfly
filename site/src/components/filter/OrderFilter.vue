@@ -20,11 +20,11 @@
         </v-col>
         <v-col cols="12" md="6" lg="3" class="pl-4">
           <v-text-field
-            label="Destino"
+            label="Destino ou nome"
             variant="outlined"
             v-model="name"
             :disabled="disabled"
-            placeholder="Nome do destino"
+            placeholder="Destino ou nome"
             density="compact"
             clearable
           ></v-text-field>

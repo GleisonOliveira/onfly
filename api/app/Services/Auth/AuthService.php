@@ -33,14 +33,14 @@ class AuthService
             $credentials = $loginRequest->validated();
 
             if (! $token = Auth::guard($type->value)->attempt($credentials)) {
-                throw new UnauthorizedException('Usuário ou senha inválido, por favor, verifique as informações e tente nvoamente.');
+                throw new UnauthorizedException('Usuário ou senha inválido, por favor, verifique as informações e tente novamente.');
             }
 
             $user = Auth::guard($type->value)->user();
 
             return new JWTResource([$token, $user, $type->name]);
         } catch (Throwable $ex) {
-            throw new UnauthorizedException('Usuário ou senha inválido, por favor, verifique as informações e tente nvoamente.');
+            throw new UnauthorizedException('Usuário ou senha inválido, por favor, verifique as informações e tente novamente.');
         }
     }
 

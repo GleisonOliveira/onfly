@@ -6,13 +6,12 @@ import { AxiosRequestResponse, ErrorResponse } from "@/types/api";
 const login =
   (api: AxiosInstance) =>
   async (
-    loginData: Login
+    loginData: Login,
+    loginAdmin: boolean
   ): AxiosRequestResponse<LoginResponse, ErrorResponse> => {
+    const uri = loginAdmin ? `${version}/admin/login` : `${version}/login`;
     try {
-      const { data } = await api.post<LoginResponse>(
-        `${version}/login`,
-        loginData
-      );
+      const { data } = await api.post<LoginResponse>(uri, loginData);
 
       return [data, undefined, undefined];
     } catch (error) {

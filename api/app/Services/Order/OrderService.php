@@ -2,6 +2,7 @@
 
 namespace App\Services\Order;
 
+use App\Exceptions\InvalidUUID;
 use App\Http\Requests\UserOrderFilters;
 use App\Http\Requests\UserOrderRequest;
 use App\Models\Enums\OrderStatus;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Str;
 use Throwable;
 
 class OrderService
@@ -47,7 +49,9 @@ class OrderService
             $query = $this->getFilters($query, $data)->orderBy('departure_date', 'desc');
 
             return $query->paginate(self::RESULTS_PER_PAGE);
-        } catch (Throwable) {
+        } catch (InvalidUUID) {
+            throw new InternalErrorException('O ID fornecido não é valido');
+        } catch (Throwable $ex) {
             throw new InternalErrorException('Não foi possível listar os pedidos');
         }
     }
@@ -72,6 +76,8 @@ class OrderService
             $query = $this->getFilters($query, $data);
 
             return $query->paginate(self::RESULTS_PER_PAGE);
+        } catch (InvalidUUID) {
+            throw new InternalErrorException('O ID fornecido não é valido');
         } catch (Throwable) {
             throw new InternalErrorException('Não foi possível listar os pedidos');
         }
@@ -139,6 +145,7 @@ class OrderService
      * @param  array   $data
      *
      * @return Builder
+     * @throws InvalidUUID
      */
     private function getFilters(Builder $query, array $data): Builder
     {
@@ -149,6 +156,10 @@ class OrderService
                 $query->where($key, $filter, $data[$key]);
             }
         });
+
+        if (!empty($data['id']) && !Str::isUuid($data['id'])) {
+            throw new InvalidUUID("ID inválido");
+        }
 
         if (!empty($data['id'])) {
             $query->where('orders.id', $data['id']);
