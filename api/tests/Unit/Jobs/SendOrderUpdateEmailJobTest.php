@@ -8,8 +8,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use LaracraftTech\LaravelUsefulAdditions\Traits\RefreshDatabaseFast;
 
-use function Pest\Laravel\assertDatabaseHas;
-
 uses(
     RefreshDatabaseFast::class,
 );

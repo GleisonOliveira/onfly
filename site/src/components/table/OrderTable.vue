@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="order in orders" :key="order.id">
+          <tr v-for="(order, index) in orders" :key="order.id">
             <td>{{ order.user.name }}</td>
             <td>{{ order.destination.name }}</td>
             <td>{{ order.destination.airport }}</td>
@@ -63,6 +63,19 @@
                   prepend-icon="mdi-close-circle-outline"
                   class="text-none"
                   color="red"
+                  :loading="
+                    (order.loading ?? false) &&
+                    !order.finishing &&
+                    (order.canceling ?? false)
+                  "
+                  @click="
+                    updateOrder({
+                      finished: false,
+                      status: 'canceled',
+                      index: index,
+                      id: order.id,
+                    })
+                  "
                   type="submit"
                   :disabled="
                     order.status === 'canceled' ||
@@ -78,12 +91,25 @@
                   class="text-none"
                   color="green"
                   type="submit"
+                  :loading="
+                    (order.loading ?? false) &&
+                    !order.finishing &&
+                    !(order.canceling ?? false)
+                  "
+                  @click="
+                    updateOrder({
+                      finished: false,
+                      status: 'approved',
+                      index: index,
+                      id: order.id,
+                    })
+                  "
                   :disabled="
                     order.status === 'approved' ||
                     order.finished ||
                     (order.loading ?? false)
                   "
-                  >Aceitar</v-btn
+                  >Aprovar</v-btn
                 >
               </td>
               <td class="pl-2 pr-2">
@@ -92,7 +118,18 @@
                   class="text-none"
                   color="blue"
                   type="submit"
-                  :disabled="order.finished || (order.loading ?? false)"
+                  :loading="!order.finished && (order.finishing ?? false)"
+                  @click="
+                    updateOrder({
+                      finished: true,
+                      status: order.status,
+                      index: index,
+                      id: order.id,
+                    })
+                  "
+                  :disabled="
+                    (order.loading && order.finishing) || order.finished
+                  "
                   >Finalizar</v-btn
                 >
               </td>
@@ -162,6 +199,7 @@ export default defineComponent({
     ...mapActions({
       getOrders: "order/getOrders",
       showModal: "order/showModal",
+      updateOrder: "order/updateOrder",
     }),
   },
 });

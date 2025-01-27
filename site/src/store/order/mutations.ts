@@ -1,4 +1,4 @@
-import { Order, OrderFilters } from "@/types/order";
+import { Order, OrderFilters, OrderStatuses } from "@/types/order";
 import { Meta } from "@/types/paginating";
 import { MutationTree } from "vuex";
 import { OrderModuleType } from "../order";
@@ -43,6 +43,30 @@ export const mutations = <MutationTree<OrderModuleType>>{
 
   setPage(state, page: number) {
     state.filters.page = page;
+  },
+
+  setOrderStatuses(state, { finished, status, index }: OrderStatuses) {
+    state.orders[index].finished = finished;
+    state.orders[index].status = status;
+  },
+
+  setOrderLoading(
+    state,
+    {
+      loading,
+      index,
+      finishing,
+      canceling,
+    }: {
+      loading: boolean;
+      index: number;
+      finishing: boolean;
+      canceling: boolean;
+    }
+  ) {
+    state.orders[index].loading = loading;
+    state.orders[index].finishing = finishing;
+    state.orders[index].canceling = canceling;
   },
 
   setFilters(state, filters: OrderFilters) {

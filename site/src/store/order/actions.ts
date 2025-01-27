@@ -1,11 +1,19 @@
 import { api } from "@/services/api/api";
-import { createOrder, getOrders } from "@/services/api/order";
-import { OrderFilters } from "@/types/order";
+import { createOrder, getOrders, updateOrder } from "@/services/api/order";
+import { OrderFilters, OrderStatuses, OrderUpdate } from "@/types/order";
 import { ActionTree } from "vuex";
 import { addDays, format, set, subDays } from "date-fns";
 import { OrderModuleType } from "../order";
 import { TZDate } from "@date-fns/tz";
 import { RootState } from "..";
+
+const getOrderUpdate = (orderStatuses: OrderStatuses): OrderUpdate => {
+  if (orderStatuses.finished) {
+    return { finished: true };
+  }
+
+  return { finished: false, status: orderStatuses.status };
+};
 
 const getOrderFilters = ({
   id,
@@ -111,6 +119,10 @@ export const actions = <ActionTree<OrderModuleType, unknown>>{
     commit("setDestinationId", destinationId);
   },
 
+  setOrderStatuses({ commit }, orderStatuses: OrderStatuses) {
+    commit("setOrderStatuses", orderStatuses);
+  },
+
   showModal({ commit, dispatch }, visible: boolean) {
     commit("showModal", visible);
 
@@ -194,5 +206,65 @@ export const actions = <ActionTree<OrderModuleType, unknown>>{
 
     dispatch("order/getOrders", null, { root: true });
     dispatch("order/showModal", false, { root: true });
+  },
+
+  async updateOrder(
+    { commit, dispatch },
+    orderStatuses: OrderStatuses & { id: string }
+  ) {
+    commit("setOrderLoading", {
+      loading: true,
+      index: orderStatuses.index,
+      finishing: orderStatuses.finished,
+      canceling: orderStatuses.status === "canceled",
+    });
+    const orderUpdate = getOrderUpdate(orderStatuses);
+    const [response, error] = await updateOrder(api)(
+      orderStatuses.id,
+      orderUpdate
+    );
+
+    if (error || !response || !response.data) {
+      dispatch(
+        "toast/showToast",
+        {
+          icon: "mdi-close-circle-outline",
+          color: "error",
+          message: error
+            ? error.data?.message
+            : "Houve um erro ao buscar atualizar o status, tente novamente.",
+        },
+        { root: true }
+      );
+
+      commit("setOrderLoading", {
+        loading: false,
+        index: orderStatuses.index,
+        finishing: false,
+      });
+
+      return;
+    }
+
+    dispatch(
+      "toast/showToast",
+      {
+        icon: "mdi-check",
+        color: "green",
+        message: "Reserva atualizada com sucesso",
+      },
+      { root: true }
+    );
+
+    commit("setOrderLoading", {
+      loading: false,
+      index: orderStatuses.index,
+      finishing: false,
+    });
+    commit("setOrderStatuses", {
+      finished: orderStatuses.finished,
+      status: orderStatuses.status,
+      index: orderStatuses.index,
+    });
   },
 };

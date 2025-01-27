@@ -11,6 +11,8 @@ export type Order = {
   destination: Destination;
   user: User;
   loading: boolean | null;
+  finishing: boolean | null;
+  canceling: boolean | null;
 };
 
 export type OrderResponse = {
@@ -32,4 +34,24 @@ export type CreateOrder = {
   arrive_date: string;
   departure_date: string;
   destination_id: string;
+};
+
+interface OrderFinished {
+  finished: boolean;
+}
+interface UpdateOrderFinished extends OrderFinished {
+  finished: true;
+}
+
+interface UpdateOrderNotFinished extends OrderFinished {
+  finished: false;
+  status: "approved" | "canceled";
+}
+
+export type OrderUpdate = UpdateOrderFinished | UpdateOrderNotFinished;
+
+export type OrderStatuses = {
+  finished: boolean;
+  status: "canceled" | "approved";
+  index: number;
 };

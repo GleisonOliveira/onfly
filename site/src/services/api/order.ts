@@ -1,7 +1,13 @@
 import { AxiosInstance } from "axios";
 import { getAxiosError, version } from "./api";
 import { AxiosRequestResponse, ErrorResponse } from "@/types/api";
-import { CreateOrder, OrderFilters, OrderResponse } from "@/types/order";
+import {
+  CreateOrder,
+  OrderFilters,
+  OrderResponse,
+  OrderUpdate,
+} from "@/types/order";
+import { id } from "vuetify/lib/locale/index.mjs";
 
 const getOrders =
   (api: AxiosInstance) =>
@@ -41,4 +47,22 @@ const createOrder =
     }
   };
 
-export { getOrders, createOrder };
+const updateOrder =
+  (api: AxiosInstance) =>
+  async (
+    id: string,
+    orderUpdate: OrderUpdate
+  ): AxiosRequestResponse<OrderResponse, ErrorResponse> => {
+    try {
+      const { data } = await api.put<OrderResponse>(
+        `${version}/admin/order/${id}`,
+        orderUpdate
+      );
+
+      return [data, undefined, undefined];
+    } catch (error) {
+      return getAxiosError(error);
+    }
+  };
+
+export { getOrders, createOrder, updateOrder };
